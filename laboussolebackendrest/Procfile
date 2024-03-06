@@ -1,2 +1,2 @@
 release: python3 manage.py migrate
-web gunicorn laboussolebackendrest.wsgi --log-file
+web gunicorn laboussolebackendrest.wsgi --log-file -
