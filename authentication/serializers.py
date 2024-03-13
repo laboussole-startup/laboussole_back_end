@@ -15,12 +15,13 @@ class UserCreationSerializer(serializers.ModelSerializer):
     telephone = serializers.CharField()
     dernier_diplome = serializers.CharField( )
     serie = serializers.CharField()
+    photo_de_profil = serializers.ImageField()
 
 
 
     class Meta:
         model = Utilisateur
-        fields = ['username','first_name','last_name','niveau','genre','date_de_naissance','email','password','telephone','dernier_diplome', 'serie']
+        fields = ['username','first_name','last_name','niveau','genre','date_de_naissance','email','password','telephone','dernier_diplome', 'serie','photo_de_profil']
         
 
     def validate(self,attrs):
@@ -40,6 +41,8 @@ class UserCreationSerializer(serializers.ModelSerializer):
 
     def create(self,validated_data):
 
+        
+
         user = Utilisateur.objects.create(
             username=validated_data['username'],
             first_name = validated_data['first_name'],
@@ -52,6 +55,7 @@ class UserCreationSerializer(serializers.ModelSerializer):
             is_active = True,
             serie = validated_data['serie'],
             dernier_diplome = validated_data['dernier_diplome'],
+            photo_de_profil = validated_data['photo_de_profil']
             
         )
 

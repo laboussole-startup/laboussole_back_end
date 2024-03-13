@@ -1,3 +1,4 @@
+import os
 from django.db import models
 from django.contrib.auth.models import AbstractUser, AbstractBaseUser
 from django.contrib.auth.base_user import BaseUserManager
@@ -39,6 +40,10 @@ class CustomManagerUser(BaseUserManager):
         return self.create_user(email,password,**extra_fields)
 
 
+def get_upload_path(filename):
+    return os.path.join('images','profiles',filename)
+
+
 class Utilisateur(AbstractUser):
 
     id = models.AutoField(primary_key=True)
@@ -51,7 +56,7 @@ class Utilisateur(AbstractUser):
     email = models.CharField(unique=True, max_length=255, blank=True, null=True)
    
     telephone = models.CharField(max_length=20, blank=True, null=True)
-    photo_de_profil = models.BinaryField(blank=True, null=True)
+    photo_de_profil = models.ImageField(upload_to='profiles/', blank=True, null=True)
     dernier_diplome = models.CharField(max_length=255, blank=True, null=True)
     serie = models.CharField(max_length=50, blank=True, null=True)
     is_staff = models.BooleanField(blank=True, null=True)
@@ -73,5 +78,7 @@ class Utilisateur(AbstractUser):
 
     def __str__(self):
         return f"<User  {self.email}"
+
+
 
 

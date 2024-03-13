@@ -7,6 +7,7 @@ from Filieres.models import Filieres
 class CentreInteret(models.Model):
     nom = models.CharField(max_length=255, blank=True, null=True)
     filieres = models.ForeignKey(Filieres, models.DO_NOTHING, blank=True, null=True)
+    image_url = models.ImageField(upload_to="images/interets/", blank=True, null=True)
 
     class Meta:
         managed = False

@@ -11,11 +11,12 @@ class FaculteCreationSerializer(serializers.ModelSerializer):
     email = serializers.CharField()
     telephone = serializers.CharField()
     universite_id = serializers.IntegerField()
+    image_url = serializers.ImageField()
 
     class Meta:
 
         model = Faculte
-        fields = ['faculte_id','nom','descriptif','condition_admission','email','telephone','universite_id']
+        fields = ['faculte_id','nom','descriptif','condition_admission','email','telephone','universite_id','image_url']
 
 
    

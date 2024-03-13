@@ -10,8 +10,9 @@ class MetiersCreationSerializer(serializers.ModelSerializer):
     entreprisesrecrutent = serializers.CharField()
     salairemoyen = serializers.CharField()
     competencescles = serializers.CharField()
+    image_url = serializers.ImageField()
 
     class Meta:
 
         model = Metiers
-        fields = ['id_metiers','nom','description','entreprisesrecrutent','salairemoyen','competencescles']
+        fields = ['id_metiers','nom','description','entreprisesrecrutent','salairemoyen','competencescles','image_url']

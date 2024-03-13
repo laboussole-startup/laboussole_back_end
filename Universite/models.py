@@ -10,6 +10,7 @@ class Universite(models.Model):
     email = models.CharField(max_length=255)
     telephone = models.CharField(max_length=255)
     site_web = models.CharField(max_length=255, blank=True, null=True)
+    image_url = models.ImageField(upload_to="images/universites/", blank=True, null=True)
 
     class Meta:
         managed = False

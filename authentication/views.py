@@ -1,17 +1,20 @@
 from django.shortcuts import render
 from .models import Utilisateur
 from . import serializers
+from rest_framework.views import APIView
 from rest_framework import generics,status
 from rest_framework.response import Response
+from rest_framework.parsers import MultiPartParser,FormParser
 
 # Create your views here.
 
 
-class UserCreateView(generics.GenericAPIView):
+class UserCreateView(APIView):
 
     serializer_class = serializers.UserCreationSerializer
+    parser_classes = [FormParser,MultiPartParser]
 
-    def post(self,request):
+    def post(self,request,format=None):
 
         data = request.data
 

@@ -9,7 +9,7 @@ class Administrateur(models.Model):
     mot_de_passe = models.CharField(max_length=255, blank=True, null=True)
     telephone = models.CharField(max_length=20, blank=True, null=True)
     derniere_connexion = models.DateTimeField(blank=True, null=True)
-    photo_de_profil = models.BinaryField(blank=True, null=True)
+    photo_de_profil = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         managed = False

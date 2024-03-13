@@ -8,7 +8,7 @@ class Temoignage(models.Model):
     nom = models.CharField(max_length=255, blank=True, null=True)
     telephone = models.CharField(max_length=20, blank=True, null=True)
     contenu = models.TextField(blank=True, null=True)
-    photo = models.BinaryField(blank=True, null=True)
+    photo = models.ImageField(upload_to="images/temoignages/", null=True)
     profession = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:

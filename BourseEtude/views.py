@@ -13,7 +13,7 @@ class BourseEtudeListView(generics.GenericAPIView):
 
     queryset = BourseEtude.objects.all()
 
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated]
 
     def get(self,request):
 
@@ -43,7 +43,7 @@ class BourseEtudeListView(generics.GenericAPIView):
 
 class BourseEtudeDetailView(generics.GenericAPIView):
 
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    #permission_classes = [IsAuthenticatedOrReadOnly]
 
     serializer_class = serializers.BourseEtudeCreationSerializer
 
