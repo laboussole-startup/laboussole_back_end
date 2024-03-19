@@ -13,7 +13,7 @@ class MetiersListView(generics.GenericAPIView):
 
     queryset = Metiers.objects.all()
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get(self,request):
 
