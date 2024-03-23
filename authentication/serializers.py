@@ -3,7 +3,7 @@ from rest_framework import serializers
 
 
 class UserCreationSerializer(serializers.ModelSerializer):
- 
+
     username = serializers.CharField()
     first_name = serializers.CharField( )
     last_name = serializers.CharField( )
@@ -22,8 +22,8 @@ class UserCreationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Utilisateur
-        fields = ['username','first_name','last_name','niveau','genre','date_de_naissance','email','password','telephone','dernier_diplome', 'serie','photo_de_profil','centre_interets']
-        
+        fields = ['username','first_name','last_name','niveau','genre','date_de_naissance','email','password','telephone','dernier_diplome', 'serie','photo_de_profil','centres_interet']
+
 
     def validate(self,attrs):
 
@@ -37,12 +37,12 @@ class UserCreationSerializer(serializers.ModelSerializer):
         if username_exists:
             raise serializers.ValidationError(detail="User with username already exits ")
 
-        
+
         return super().validate(attrs)
 
     def create(self,validated_data):
 
-        
+
 
         user = Utilisateur.objects.create(
             username=validated_data['username'],
@@ -58,7 +58,7 @@ class UserCreationSerializer(serializers.ModelSerializer):
             dernier_diplome = validated_data['dernier_diplome'],
             photo_de_profil = validated_data['photo_de_profil'],
             centres_interet = validated_data['centres_interet']
-            
+
         )
 
         user.set_password(validated_data['password'])
@@ -68,7 +68,7 @@ class UserCreationSerializer(serializers.ModelSerializer):
         return user
 
 class UserDetailSerializer(serializers.ModelSerializer):
- 
+
     username = serializers.CharField()
     first_name = serializers.CharField( )
     last_name = serializers.CharField( )

@@ -14,4 +14,4 @@ class Metiers(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'metiers'
+        db_table = 'Metiers'

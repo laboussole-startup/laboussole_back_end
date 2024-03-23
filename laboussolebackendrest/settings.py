@@ -75,7 +75,7 @@ INSTALLED_APPS = [
 
 AUTH_USER_MODEL = 'authentication.Utilisateur'
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ORIGIN_ALLOW_ALL  = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -115,12 +115,12 @@ WSGI_APPLICATION = 'laboussolebackendrest.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'laboussolebd22',
-        'USER': 'postgres',
-        'PASSWORD' : 'root',
-        'HOST':'localhost',
-        'PORT':5432
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'AristideAbeng$laboussolebd',
+        'USER': 'AristideAbeng',
+        'PASSWORD' : '12Abi#lo',
+        'HOST':'AristideAbeng.mysql.pythonanywhere-services.com',
+        'PORT':3306
     }
 }
 

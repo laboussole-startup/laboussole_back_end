@@ -24,7 +24,7 @@ class UserCreateView(APIView):
 
             serializer.save()
 
-            return Response(data=serializer.data,status=status.HTTP_201_CREATED)
+            return Response(data={"data":serializer.data,"status":201},status=status.HTTP_201_CREATED)
 
         return Response(data=serializer.errors ,status=status.HTTP_400_BAD_REQUEST)
 
