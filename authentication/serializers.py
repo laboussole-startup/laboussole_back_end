@@ -16,12 +16,13 @@ class UserCreationSerializer(serializers.ModelSerializer):
     dernier_diplome = serializers.CharField( )
     serie = serializers.CharField()
     photo_de_profil = serializers.ImageField()
+    centres_interet = serializers.CharField()
 
 
 
     class Meta:
         model = Utilisateur
-        fields = ['username','first_name','last_name','niveau','genre','date_de_naissance','email','password','telephone','dernier_diplome', 'serie','photo_de_profil']
+        fields = ['username','first_name','last_name','niveau','genre','date_de_naissance','email','password','telephone','dernier_diplome', 'serie','photo_de_profil','centre_interets']
         
 
     def validate(self,attrs):
@@ -55,7 +56,8 @@ class UserCreationSerializer(serializers.ModelSerializer):
             is_active = True,
             serie = validated_data['serie'],
             dernier_diplome = validated_data['dernier_diplome'],
-            photo_de_profil = validated_data['photo_de_profil']
+            photo_de_profil = validated_data['photo_de_profil'],
+            centres_interet = validated_data['centres_interet']
             
         )
 
@@ -64,3 +66,25 @@ class UserCreationSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
+
+class UserDetailSerializer(serializers.ModelSerializer):
+ 
+    username = serializers.CharField()
+    first_name = serializers.CharField( )
+    last_name = serializers.CharField( )
+    niveau = serializers.CharField(  )
+    genre = serializers.CharField( )
+    date_de_naissance = serializers.DateField(  )
+    email = serializers.CharField()
+    password = serializers.CharField( )
+    telephone = serializers.CharField()
+    dernier_diplome = serializers.CharField( )
+    serie = serializers.CharField()
+    photo_de_profil = serializers.ImageField()
+    centres_interet = serializers.CharField()
+
+
+
+    class Meta:
+        model = Utilisateur
+        fields = ['username','first_name','last_name','niveau','genre','date_de_naissance','email','password','telephone','dernier_diplome', 'serie','photo_de_profil','centres_interet']

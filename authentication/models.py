@@ -54,7 +54,7 @@ class Utilisateur(AbstractUser):
     genre = models.CharField(max_length=10, blank=True, null=True)
     date_de_naissance = models.DateField(blank=True, null=True)
     email = models.CharField(unique=True, max_length=255, blank=True, null=True)
-   
+    centres_interet = models.CharField()
     telephone = models.CharField(max_length=20, blank=True, null=True)
     photo_de_profil = models.ImageField(upload_to='profiles/', blank=True, null=True)
     dernier_diplome = models.CharField(max_length=255, blank=True, null=True)
@@ -67,7 +67,7 @@ class Utilisateur(AbstractUser):
     date_inscription = models.DateTimeField(auto_now_add=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'utilisateur'
 
     USERNAME_FIELD = 'email'

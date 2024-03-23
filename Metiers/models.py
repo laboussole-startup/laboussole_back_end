@@ -9,7 +9,7 @@ class Metiers(models.Model):
     description = models.TextField(blank=True, null=True)
     entreprisesrecrutent = models.TextField(blank=True, null=True)
     salairemoyen = models.TextField(blank=True, null=True)
-    image_url = models.ImageField(upload_to="images/metiers/", blank=True, null=True)
+    images = models.ImageField(upload_to="images/metiers/", blank=True, null=True)
     competencescles = models.TextField(blank=True, null=True)
 
     class Meta:

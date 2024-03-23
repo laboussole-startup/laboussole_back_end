@@ -13,7 +13,7 @@ class Filieres(models.Model):
     langue_enseignement = models.CharField(max_length=50)
     diplome_delivre = models.CharField(max_length=255)
     faculte = models.ForeignKey(Faculte, models.DO_NOTHING)
-    image_url = models.ImageField(upload_to="images/filieres", blank=True, null=True)
+    imageurl = models.ImageField(upload_to="images/filieres", blank=True, null=True)
 
     class Meta:
         managed = False

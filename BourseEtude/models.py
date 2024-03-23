@@ -22,7 +22,7 @@ class BourseEtude(models.Model):
     critères_eligibilite = models.TextField(blank=True, null=True)
     comment_postuler = models.TextField(blank=True, null=True)
     page_officielle = models.CharField(max_length=255, blank=True, null=True)
-    image_url = models.ImageField(upload_to='images/bourses/', blank=True, null=True)
+    imageurl = models.ImageField(upload_to='images/bourses/', blank=True, null=True)
 
     class Meta:
         managed = False

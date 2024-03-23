@@ -11,9 +11,9 @@ class UniversiteCreationSerializer(serializers.ModelSerializer):
     email = serializers.CharField(max_length=255)
     telephone = serializers.CharField(max_length=255)
     site_web = serializers.CharField(max_length=255)
-    image_url = serializers.ImageField()
+    imageurl = serializers.ImageField()
 
     class Meta:
 
         model = Universite
-        fields = ['universite_id','nom','ville','descriptif','email','telephone','site_web','image_url']
+        fields = ['universite_id','nom','ville','descriptif','email','telephone','site_web','imageurl']

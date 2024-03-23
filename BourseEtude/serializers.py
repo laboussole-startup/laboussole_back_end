@@ -21,9 +21,9 @@ class BourseEtudeCreationSerializer(serializers.ModelSerializer):
     critères_eligibilite = serializers.CharField()
     comment_postuler = serializers.CharField()
     page_officielle = serializers.CharField(max_length=255)
-    image_url = serializers.ImageField()
+    imageurl = serializers.ImageField()
 
     class Meta:
         model = BourseEtude
-        fields = ['nom','date_limite','niveau','finance','ouvert_pour','pays','statut','description','etablissements_hotes','programme_eligible','nombre_bourse','duree','groupe_cible','avantages_bourse','critères_eligibilite','comment_postuler','page_officielle','image_url']
+        fields = ['nom','date_limite','niveau','finance','ouvert_pour','pays','statut','description','etablissements_hotes','programme_eligible','nombre_bourse','duree','groupe_cible','avantages_bourse','critères_eligibilite','comment_postuler','page_officielle','imageurl']
     

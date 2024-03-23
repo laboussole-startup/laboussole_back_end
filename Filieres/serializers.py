@@ -12,9 +12,9 @@ class FilieresCreationSerializer(serializers.ModelSerializer):
     langue_enseignement = serializers.CharField(max_length=50)
     diplome_delivre = serializers.CharField(max_length=255)
     faculte_id = serializers.IntegerField()
-    image_url = serializers.ImageField()
+    imageurl = serializers.ImageField()
 
     class Meta:
 
         model = Filieres
-        fields = ['nom','descriptif','duree','cout','langue_enseignement','diplome_delivre','faculte_id','image_url']
+        fields = ['nom','descriptif','duree','cout','langue_enseignement','diplome_delivre','faculte_id','imageurl']

@@ -12,7 +12,7 @@ class Faculte(models.Model):
     email = models.CharField(max_length=255, blank=True, null=True)
     telephone = models.CharField(max_length=255, blank=True, null=True)
     universite = models.ForeignKey(Universite, models.DO_NOTHING)
-    image_url = models.ImageField(upload_to="images/facultes", blank=True, null=True)
+    imageurl = models.ImageField(upload_to="images/facultes", blank=True, null=True)
 
     class Meta:
         managed = False
