@@ -13,7 +13,7 @@ class FaculteListView(generics.GenericAPIView):
 
     queryset = Faculte.objects.all()
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get(self,request):
 
