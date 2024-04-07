@@ -13,7 +13,7 @@ class FilieresListView(generics.GenericAPIView):
 
     queryset = Filieres.objects.all()
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get(self,request):
 
