@@ -22,7 +22,7 @@ class FilieresListView(generics.GenericAPIView):
         serializer = self.serializer_class(instance=filieres,many=True)
 
         return Response(data=serializer.data,status=status.HTTP_200_OK)
-        
+
 
     def post(self,request):
 
@@ -48,7 +48,7 @@ class FilieresDetailView(generics.GenericAPIView):
     serializer_class = serializers.FilieresCreationSerializer
 
     def get(self,request,filiere_id):
-        
+
         filieres = get_object_or_404(Filieres,pk=filiere_id)
 
         serializer = self.serializer_class(instance=filieres)
@@ -73,9 +73,37 @@ class FilieresDetailView(generics.GenericAPIView):
 
 
     def delete(self,request,filiere_id):
-        
+
         filieres = get_object_or_404(Filieres,pk=filiere_id)
 
         filieres.delete()
 
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class FacultesFilieresView(generics.GenericAPIView):
+
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    serializer_class = serializers.FilieresCreationSerializer
+
+    def get(self,request,faculte_id):
+
+        faculties = Filieres.objects.filter(faculte=faculte_id)
+
+        serializer = self.serializer_class(instance=faculties,many=True)
+
+        return Response(data=serializer.data,status=status.HTTP_200_OK)
+
+class FilieresPerCycleView(generics.GenericAPIView):
+
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    serializer_class = serializers.FilieresCreationSerializer
+
+    def get(self,request,faculte_id,duree_cycle):
+
+        filieres = Filieres.objects.filter(faculte_id=faculte_id, duree=duree_cycle)
+
+        serializer = self.serializer_class(instance=filieres,many=True)
+
+        return Response(data=serializer.data,status=status.HTTP_200_OK)

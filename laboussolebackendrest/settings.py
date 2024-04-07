@@ -23,9 +23,9 @@ REST_FRAMEWORK = {
     'NON_FIELD_ERRORS_KEY':'errors',
     'DEFAULT_AUTHENTICATION_CLASSES':(
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-        
+
     ),
-   
+
 }
 
 SIMPLE_JWT = {
