@@ -12,8 +12,11 @@ class Filieres(models.Model):
     cout = models.DecimalField(max_digits=10, decimal_places=2)
     langue_enseignement = models.CharField(max_length=50)
     diplome_delivre = models.CharField(max_length=255)
+    images_pc = models.CharField(max_length=255, blank=True, null=True)
+    images_telephone = models.CharField(max_length=255, blank=True, null=True)
+    images_tablettes = models.CharField(max_length=255, blank=True, null=True)
     faculte = models.ForeignKey(Faculte, models.DO_NOTHING)
-    image_url = models.ImageField(upload_to="images/filieres", blank=True, null=True)
+    centre_interet = models.TextField(blank=True, null=True)
 
     class Meta:
         managed = False

@@ -3,7 +3,6 @@ from django.db import models
 # Create your models here.
 
 class BourseEtude(models.Model):
-    
     id_bourse = models.AutoField(primary_key=True)
     nom = models.CharField(max_length=255, blank=True, null=True)
     date_limite = models.DateField(blank=True, null=True)
@@ -22,7 +21,6 @@ class BourseEtude(models.Model):
     critères_eligibilite = models.TextField(blank=True, null=True)
     comment_postuler = models.TextField(blank=True, null=True)
     page_officielle = models.CharField(max_length=255, blank=True, null=True)
-    image_url = models.ImageField(upload_to='images/bourses/', blank=True, null=True)
 
     class Meta:
         managed = False

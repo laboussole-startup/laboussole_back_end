@@ -13,7 +13,7 @@ class UniversiteListView(generics.GenericAPIView):
 
     queryset = Universite.objects.all()
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get(self,request):
 

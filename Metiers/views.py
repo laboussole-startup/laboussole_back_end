@@ -4,6 +4,7 @@ from . import serializers
 from rest_framework import generics,status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly
+from rest_framework.pagination import PageNumberPagination
 
 # Create your views here.
 
@@ -13,15 +14,20 @@ class MetiersListView(generics.GenericAPIView):
 
     queryset = Metiers.objects.all()
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
-    def get(self,request):
+    pagination_class = PageNumberPagination
 
-        metiers = Metiers.objects.all()
+    def get(self,request,*args,**kwargs):
 
-        serializer = self.serializer_class(instance=metiers,many=True)
-
-        return Response(data=serializer.data,status=status.HTTP_200_OK)
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)  # Paginate the queryset
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
         
 
     def post(self,request):

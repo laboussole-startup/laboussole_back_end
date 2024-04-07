@@ -13,7 +13,7 @@ class CentreInteretListView(generics.GenericAPIView):
 
     queryset = CentreInteret.objects.all()
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get(self,request):
 
