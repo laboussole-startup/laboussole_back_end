@@ -20,7 +20,7 @@ DEBUG = config('DEBUG',cast=bool)
 
 ALLOWED_HOSTS = ['*']
 
-CORS_ORIGIN_ALLOW_ALL  = True
+CORS_ORIGIN_ALLOW_ALL = True
 
 REST_FRAMEWORK = {
     'NON_FIELD_ERRORS_KEY':'errors',
@@ -28,7 +28,7 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         
     ),
-    'PAGE_SIZE': 100,
+    'PAGE_SIZE': 100
    
 }
 
