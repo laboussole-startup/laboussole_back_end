@@ -20,6 +20,8 @@ DEBUG = config('DEBUG',cast=bool)
 
 ALLOWED_HOSTS = ['*']
 
+CORS_ORIGIN_ALLOW_ALL  = True
+
 REST_FRAMEWORK = {
     'NON_FIELD_ERRORS_KEY':'errors',
     'DEFAULT_AUTHENTICATION_CLASSES':(
