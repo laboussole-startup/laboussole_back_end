@@ -13,7 +13,7 @@ class FaculteListView(generics.GenericAPIView):
 
     queryset = Faculte.objects.all()
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get(self,request):
 
@@ -22,7 +22,7 @@ class FaculteListView(generics.GenericAPIView):
         serializer = self.serializer_class(instance=facultes,many=True)
 
         return Response(data=serializer.data,status=status.HTTP_200_OK)
-        
+
 
     def post(self,request):
 
@@ -48,7 +48,7 @@ class FaculteDetailView(generics.GenericAPIView):
     serializer_class = serializers.FaculteCreationSerializer
 
     def get(self,request,faculte_id):
-        
+
         faculte = get_object_or_404(Faculte,pk=faculte_id)
 
         serializer = self.serializer_class(instance=faculte)
@@ -73,7 +73,7 @@ class FaculteDetailView(generics.GenericAPIView):
 
 
     def delete(self,request,faculte_id):
-        
+
         faculte = get_object_or_404(Faculte,pk=faculte_id)
 
         faculte.delete()

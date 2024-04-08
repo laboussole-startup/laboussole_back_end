@@ -7,12 +7,11 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Filieres',
+            name="Filieres",
             fields=[
                 ('filieres_id', models.AutoField(primary_key=True, serialize=False)),
                 ('nom', models.CharField(max_length=255)),
@@ -27,8 +26,8 @@ class Migration(migrations.Migration):
                 ('centre_interet', models.TextField(blank=True, null=True)),
             ],
             options={
-                'db_table': 'filieres',
-                'managed': False,
+                "db_table": "filieres",
+                "managed": False,
             },
         ),
     ]

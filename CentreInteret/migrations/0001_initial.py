@@ -7,19 +7,18 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='CentreInteret',
+            name="CentreInteret",
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('nom', models.CharField(blank=True, max_length=255, null=True)),
             ],
             options={
-                'db_table': 'centre_interet',
-                'managed': False,
+                "db_table": "centre_interet",
+                "managed": False,
             },
         ),
     ]

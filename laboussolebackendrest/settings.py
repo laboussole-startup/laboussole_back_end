@@ -24,7 +24,7 @@ REST_FRAMEWORK = {
     'NON_FIELD_ERRORS_KEY':'errors',
     'DEFAULT_AUTHENTICATION_CLASSES':(
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-        
+
     ),
     'PAGE_SIZE': 100,
    
@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'djoser',
     'drf_yasg',
+    'corsheaders',
 
     'authentication.apps.AuthenticationConfig',
     'administrateur.apps.AdministrateurConfig',
@@ -76,7 +77,7 @@ INSTALLED_APPS = [
 
 AUTH_USER_MODEL = 'authentication.Utilisateur'
 
-
+CORS_ORIGIN_ALLOW_ALL  = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -86,7 +87,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware'
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'laboussolebackendrest.urls'

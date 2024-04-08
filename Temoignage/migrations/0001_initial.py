@@ -7,12 +7,11 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Temoignage',
+            name="Temoignage",
             fields=[
                 ('id_temoignage', models.AutoField(primary_key=True, serialize=False)),
                 ('nom', models.CharField(blank=True, max_length=255, null=True)),
@@ -22,8 +21,8 @@ class Migration(migrations.Migration):
                 ('profession', models.CharField(blank=True, max_length=255, null=True)),
             ],
             options={
-                'db_table': 'temoignage',
-                'managed': False,
+                "db_table": "temoignage",
+                "managed": False,
             },
         ),
     ]

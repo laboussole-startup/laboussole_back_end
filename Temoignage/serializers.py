@@ -9,8 +9,9 @@ class TemoignageCreationSerializer(serializers.ModelSerializer):
     contenu = serializers.CharField()
     photo = serializers.ImageField()
     profession = serializers.CharField(max_length=255)
+    Score = serializers.IntegerField()
 
     class Meta:
 
         model = Temoignage
-        fields = ['id_temoignage','nom','telephone','contenu','profession','photo']
+        fields = ['id_temoignage','nom','telephone','contenu','profession','photo','Score']

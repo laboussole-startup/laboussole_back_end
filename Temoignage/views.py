@@ -13,7 +13,7 @@ class TemoignageListView(generics.GenericAPIView):
 
     queryset = Temoignage.objects.all()
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get(self,request):
 

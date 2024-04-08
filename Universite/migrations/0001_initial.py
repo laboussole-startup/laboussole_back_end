@@ -7,12 +7,11 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Universite',
+            name="Universite",
             fields=[
                 ('universite_id', models.AutoField(primary_key=True, serialize=False)),
                 ('nom', models.CharField(max_length=255, unique=True)),
@@ -28,8 +27,8 @@ class Migration(migrations.Migration):
                 ('images_tablettes', models.TextField(blank=True, null=True)),
             ],
             options={
-                'db_table': 'universite',
-                'managed': False,
+                "db_table": "universite",
+                "managed": False,
             },
         ),
     ]

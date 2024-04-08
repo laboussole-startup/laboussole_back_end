@@ -7,12 +7,11 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='BourseEtude',
+            name="BourseEtude",
             fields=[
                 ('id_bourse', models.AutoField(primary_key=True, serialize=False)),
                 ('nom', models.CharField(blank=True, max_length=255, null=True)),
@@ -34,8 +33,8 @@ class Migration(migrations.Migration):
                 ('page_officielle', models.CharField(blank=True, max_length=255, null=True)),
             ],
             options={
-                'db_table': 'bourse_etude',
-                'managed': False,
+                "db_table": "bourse_etude",
+                "managed": False,
             },
         ),
     ]
