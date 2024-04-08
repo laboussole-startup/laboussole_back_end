@@ -28,7 +28,7 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         
     ),
-    'PAGE_SIZE': 100
+    'PAGE_SIZE': 100,
    
 }
 
