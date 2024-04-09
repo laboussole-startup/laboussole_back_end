@@ -17,11 +17,16 @@ class FilieresListView(generics.GenericAPIView):
 
     def get(self,request):
 
-        filieres = Filieres.objects.all()
+        name = request.query_params.get('name', None)
 
-        serializer = self.serializer_class(instance=filieres,many=True)
+        if name:
+            filieres = Filieres.objects.filter(nom=name)
+        else:
+            filieres = Filieres.objects.all()
 
-        return Response(data=serializer.data,status=status.HTTP_200_OK)
+        serializer = self.serializer_class(instance=filieres, many=True)
+        
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
     def post(self,request):
