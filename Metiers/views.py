@@ -45,8 +45,11 @@ class MetiersListView(generics.GenericAPIView):
                     )
                 )
             )
-        # Sort the queryset by the number of words found in descending order
-        queryset = queryset.order_by('-word_count', 'nom')
+            # Sort the queryset by the number of words found in descending order
+            queryset = queryset.order_by('-word_count', 'nom')
+        else:
+            # If search parameter is None, order by ascending order of nom field
+            queryset = queryset.order_by('nom')
         return queryset
 
     def get(self,request,*args,**kwargs):
