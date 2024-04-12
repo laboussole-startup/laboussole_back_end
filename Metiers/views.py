@@ -8,6 +8,7 @@ from rest_framework.pagination import PageNumberPagination
 from django.db.models import Q, Value
 from django.db.models.functions import Length
 from django.db.models import Q, Sum, Case, When, Value, IntegerField
+from unidecode import unidecode
 
 
 
@@ -27,11 +28,11 @@ class MetiersListView(generics.GenericAPIView):
         queryset = Metiers.objects.all()
         search_query = self.request.query_params.get('search', None)
         if search_query:
-            # Split the search query into individual words
-            search_words = search_query.split()
             # Create a Q object to combine multiple OR conditions
             conditions = Q()
-            for word in search_words:
+            for word in search_query.split():
+                # Remove accents from search query term
+                word = unidecode(word)
                 # Add OR condition for each word in the search query
                 conditions |= Q(nom__icontains=word)
             # Apply the filter
@@ -40,7 +41,7 @@ class MetiersListView(generics.GenericAPIView):
             queryset = queryset.annotate(
                 word_count=Sum(
                     Case(
-                        *[When(nom__icontains=word, then=Value(1)) for word in search_words],
+                        *[When(nom__icontains=unidecode(word), then=Value(1)) for word in search_query.split()],
                         default=Value(0),
                         output_field=IntegerField(),
                     )
