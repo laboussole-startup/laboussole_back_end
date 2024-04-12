@@ -7,7 +7,8 @@ from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly
 from rest_framework.pagination import PageNumberPagination
 from django.db.models import Q, Value
 from django.db.models.functions import Length
-from django.db.models import Sum, Case, When, Value
+from django.db.models import Q, Sum, Case, When, Value, IntegerField
+
 
 
 # Create your views here.
