@@ -4,6 +4,8 @@ from . import serializers
 from rest_framework import generics,status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly
+from django.db.models import Q, Sum, Case, When, Value, IntegerField
+from django.db.models.functions import Length
 
 # Create your views here.
 
@@ -15,8 +17,41 @@ class UniversiteListView(generics.GenericAPIView):
 
     permission_classes = [IsAuthenticatedOrReadOnly]
 
+
+    def get_queryset(self):
+        queryset = Universite.objects.all()
+        search_query = self.request.query_params.get('search', None)
+        if search_query:
+            # Split the search query into individual words
+            search_words = search_query.split()
+            # Create a Q object to combine multiple OR conditions
+            conditions = Q()
+            for word in search_words:
+                # Add OR condition for each word in the search query
+                conditions |= Q(nom__icontains=word)
+            # Apply the filter
+            queryset = queryset.filter(conditions)
+            # Annotate queryset with count of words from search query found in nom field
+            queryset = queryset.annotate(
+                word_count=Sum(
+                    Case(
+                        *[When(nom__icontains=word, then=Value(1)) for word in search_words],
+                        default=Value(0),
+                        output_field=IntegerField(),
+                    )
+                )
+            )
+            # Sort the queryset by the number of words found in descending order
+            queryset = queryset.order_by('-word_count', 'nom')
+        else:
+            # If search parameter is None, order by ascending order of nom field
+            queryset = queryset.order_by('nom')
+        return queryset
+
     def get(self,request):
 
+        queryset = self.get_queryset()
+        queryset = self.filter_queryset(self.get_queryset())
         universites = Universite.objects.all()
 
         serializer = self.serializer_class(instance=universites,many=True)
