@@ -54,7 +54,7 @@ class UniversiteListView(generics.GenericAPIView):
         queryset = self.filter_queryset(self.get_queryset())
         universites = Universite.objects.all()
 
-        serializer = self.serializer_class(instance=universites,many=True)
+        serializer = self.serializer_class(instance=queryset,many=True)
 
         return Response(data=serializer.data,status=status.HTTP_200_OK)
         
