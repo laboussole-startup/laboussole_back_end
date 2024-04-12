@@ -39,12 +39,9 @@ class MetiersListView(generics.GenericAPIView):
             queryset = queryset.annotate(
                 word_count=Sum(
                     Case(
-                        When(
-                            *[Q(nom__icontains=word) for word in search_words],
-                            then=Value(1),
-                        ),
+                        *[When(nom__icontains=word, then=Value(1)) for word in search_words],
                         default=Value(0),
-                        output_field=models.IntegerField(),
+                        output_field=IntegerField(),
                     )
                 )
             )
