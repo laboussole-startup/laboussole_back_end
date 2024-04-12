@@ -4,6 +4,7 @@ from . import serializers
 from rest_framework import generics,status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly
+from django.db.models import Q
 
 # Create your views here.
 
@@ -15,11 +16,29 @@ class FaculteListView(generics.GenericAPIView):
 
     permission_classes = [IsAuthenticatedOrReadOnly]
 
+    def get_queryset(self):
+        queryset = Faculte.objects.all()
+        search_query = self.request.query_params.get('search', None)
+        if search_query:
+            # Split the search query into individual words
+            search_words = search_query.split()
+            # Create a Q object to combine multiple OR conditions
+            conditions = Q()
+            for word in search_words:
+                # Add OR condition for each word in the search query
+                conditions |= Q(nom__icontains=word)
+            # Apply the filter
+            queryset = queryset.filter(conditions)
+        # Sort the queryset alphabetically by the 'nom' field
+        queryset = queryset.order_by('nom')
+        return queryset
+
     def get(self,request):
 
-        facultes = Faculte.objects.all()
+        queryset = self.get_queryset()
+        queryset = self.filter_queryset(self.get_queryset())
 
-        serializer = self.serializer_class(instance=facultes,many=True)
+        serializer = self.serializer_class(instance=queryset,many=True)
 
         return Response(data=serializer.data,status=status.HTTP_200_OK)
 
