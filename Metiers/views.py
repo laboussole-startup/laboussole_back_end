@@ -5,6 +5,7 @@ from rest_framework import generics,status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly
 from rest_framework.pagination import PageNumberPagination
+from django.db.models import Q
 
 # Create your views here.
 
@@ -18,8 +19,25 @@ class MetiersListView(generics.GenericAPIView):
 
     pagination_class = PageNumberPagination
 
-    def get(self,request,*args,**kwargs):
+    def get_queryset(self):
+        queryset = Metiers.objects.all()
+        search_query = self.request.query_params.get('search', None)
+        if search_query:
+            # Split the search query into individual words
+            search_words = search_query.split()
+            # Create a Q object to combine multiple OR conditions
+            conditions = Q()
+            for word in search_words:
+                # Add OR condition for each word in the search query
+                conditions |= Q(nom__icontains=word)
+            # Apply the filter
+            queryset = queryset.filter(conditions)
+        # Sort the queryset alphabetically by the 'nom' field
+        queryset = queryset.order_by('nom')
+        return queryset
 
+    def get(self,request,*args,**kwargs):
+        queryset = self.get_queryset()
         queryset = self.filter_queryset(self.get_queryset())
         page = self.paginate_queryset(queryset)  # Paginate the queryset
         if page is not None:
@@ -27,7 +45,7 @@ class MetiersListView(generics.GenericAPIView):
             return self.get_paginated_response(serializer.data)
         
         serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
+        return Response(data=serializer.data,status=status.HTTP_200_OK)
         
 
     def post(self,request):
