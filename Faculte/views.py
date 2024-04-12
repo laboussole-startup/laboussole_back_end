@@ -4,7 +4,8 @@ from . import serializers
 from rest_framework import generics,status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly
-from django.db.models import Q
+from django.db.models import Q, Sum, Case, When, Value, IntegerField
+from django.db.models.functions import Length
 
 # Create your views here.
 
@@ -29,8 +30,21 @@ class FaculteListView(generics.GenericAPIView):
                 conditions |= Q(nom__icontains=word)
             # Apply the filter
             queryset = queryset.filter(conditions)
-        # Sort the queryset alphabetically by the 'nom' field
-        queryset = queryset.order_by('nom')
+            # Annotate queryset with count of words from search query found in nom field
+            queryset = queryset.annotate(
+                word_count=Sum(
+                    Case(
+                        *[When(nom__icontains=word, then=Value(1)) for word in search_words],
+                        default=Value(0),
+                        output_field=IntegerField(),
+                    )
+                )
+            )
+            # Sort the queryset by the number of words found in descending order
+            queryset = queryset.order_by('-word_count', 'nom')
+        else:
+            # If search parameter is None, order by ascending order of nom field
+            queryset = queryset.order_by('nom')
         return queryset
 
     def get(self,request):
