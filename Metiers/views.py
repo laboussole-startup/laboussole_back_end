@@ -31,17 +31,15 @@ class MetiersListView(generics.GenericAPIView):
             # Create a Q object to combine multiple OR conditions
             conditions = Q()
             for word in search_query.split():
-                # Remove accents from search query term
-                word = unidecode(word)
                 # Add OR condition for each word in the search query
-                conditions |= Q(nom__icontains=word)
+                conditions |= Q(nom__unaccent__icontains=word)
             # Apply the filter
             queryset = queryset.filter(conditions)
             # Annotate queryset with count of words from search query found in nom field
             queryset = queryset.annotate(
                 word_count=Sum(
                     Case(
-                        *[When(nom__icontains=unidecode(word), then=Value(1)) for word in search_query.split()],
+                        *[When(nom__unaccent__icontains=word, then=Value(1)) for word in search_query.split()],
                         default=Value(0),
                         output_field=IntegerField(),
                     )
