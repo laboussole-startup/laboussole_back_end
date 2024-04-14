@@ -8,6 +8,22 @@
 from django.db import models
 
 
+class Actualit(models.Model):
+    id_actualite = models.AutoField(primary_key=True)
+    titre = models.CharField(max_length=255, blank=True, null=True)
+    date = models.DateField(blank=True, null=True)
+    nom = models.CharField(max_length=255, blank=True, null=True)
+    contenu = models.TextField(blank=True, null=True)
+    domaine = models.CharField(max_length=255, blank=True, null=True)
+    image_pc = models.TextField(blank=True, null=True)
+    image_tablette = models.TextField(blank=True, null=True)
+    image_desktop = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'actualité'
+
+
 class Administrateur(models.Model):
     id_admin = models.AutoField(primary_key=True)
     nom = models.CharField(max_length=255, blank=True, null=True)
@@ -112,6 +128,21 @@ class Metiers(models.Model):
         db_table = 'metiers'
 
 
+class Notification(models.Model):
+    id_notification = models.AutoField(primary_key=True)
+    titre = models.CharField(max_length=255, blank=True, null=True)
+    contenu = models.TextField(blank=True, null=True)
+    statut = models.CharField(max_length=255, blank=True, null=True)
+    nationalité = models.CharField(max_length=255, blank=True, null=True)
+    image_pc = models.TextField(blank=True, null=True)
+    image_tablette = models.TextField(blank=True, null=True)
+    image_desktop = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'notification'
+
+
 class Temoignage(models.Model):
     id_temoignage = models.AutoField(primary_key=True)
     nom = models.CharField(max_length=255, blank=True, null=True)
@@ -142,27 +173,3 @@ class Universite(models.Model):
     class Meta:
         managed = False
         db_table = 'universite'
-
-
-class Utilisateur(models.Model):
-    id_utilisateur = models.AutoField(primary_key=True)
-    nom = models.CharField(max_length=255, blank=True, null=True)
-    prenom = models.CharField(max_length=255, blank=True, null=True)
-    pays = models.CharField(max_length=255, blank=True, null=True)
-    ville = models.CharField(max_length=255, blank=True, null=True)
-    niveau = models.CharField(max_length=50, blank=True, null=True)
-    genre = models.CharField(max_length=10, blank=True, null=True)
-    date_de_naissance = models.DateField(blank=True, null=True)
-    mail = models.CharField(max_length=255, blank=True, null=True)
-    mot_de_passe = models.CharField(max_length=255, blank=True, null=True)
-    telephone = models.CharField(max_length=20, blank=True, null=True)
-    centre_interet = models.TextField(blank=True, null=True)
-    photo_de_profil = models.CharField(max_length=255, blank=True, null=True)
-    dernier_diplome = models.CharField(max_length=255, blank=True, null=True)
-    serie = models.CharField(max_length=50, blank=True, null=True)
-    derniere_connexion = models.DateTimeField(blank=True, null=True)
-    date_inscription = models.DateTimeField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'utilisateur'

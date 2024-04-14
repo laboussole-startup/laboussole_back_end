@@ -21,20 +21,18 @@ class FaculteListView(generics.GenericAPIView):
         queryset = Faculte.objects.all()
         search_query = self.request.query_params.get('search', None)
         if search_query:
-            # Split the search query into individual words
-            search_words = search_query.split()
             # Create a Q object to combine multiple OR conditions
             conditions = Q()
-            for word in search_words:
+            for word in search_query.split():
                 # Add OR condition for each word in the search query
-                conditions |= Q(nom__icontains=word)
+                conditions |= Q(nom__unaccent__icontains=word)
             # Apply the filter
             queryset = queryset.filter(conditions)
             # Annotate queryset with count of words from search query found in nom field
             queryset = queryset.annotate(
                 word_count=Sum(
                     Case(
-                        *[When(nom__icontains=word, then=Value(1)) for word in search_words],
+                        *[When(nom__unaccent__icontains=word, then=Value(1)) for word in search_query.split()],
                         default=Value(0),
                         output_field=IntegerField(),
                     )

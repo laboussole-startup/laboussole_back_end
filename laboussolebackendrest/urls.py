@@ -28,6 +28,8 @@ urlpatterns = [
     path('bourses/',include('BourseEtude.urls')),
     path('centres_interet/',include('CentreInteret.urls')),
     path('facultes/',include('Faculte.urls')),
+    path('actualites/',include('actualites.urls')),
+    path('notifications/',include('notification.urls')),
     path('filieres/',include('Filieres.urls')),
     path('metiers/',include('Metiers.urls')),
     path('temoignages/',include('Temoignage.urls')),

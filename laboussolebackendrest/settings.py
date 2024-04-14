@@ -76,6 +76,8 @@ INSTALLED_APPS = [
     'Metiers.apps.MetiersConfig',
     'Temoignage.apps.TemoignageConfig',
     'Universite.apps.UniversiteConfig',
+    'actualites.apps.ActualitesConfig',
+    'notification.apps.NotificationConfig'
 ]
 
 AUTH_USER_MODEL = 'authentication.Utilisateur'
