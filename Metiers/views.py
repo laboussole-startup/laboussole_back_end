@@ -142,7 +142,7 @@ class MetierRecommendationsView(generics.GenericAPIView):
             for word in search_words:
                 # Add OR condition for each word in the search query
                 conditions |= (
-                    Q(titre__unaccent__icontains=word) |
+                    Q(nom__unaccent__icontains=word) |
                     Q(description__unaccent__icontains=word) |
                     Q(competencescles__unaccent__icontains=word) |
                     Q(principales_missions__unaccent__icontains=word)
@@ -154,7 +154,7 @@ class MetierRecommendationsView(generics.GenericAPIView):
                 word_count=Sum(
                     Case(
                         [
-                            When(titre__unaccent__icontains=word, then=Value(1)),
+                            When(nom__unaccent__icontains=word, then=Value(1)),
                             When(description__unaccent__icontains=word, then=Value(1)),
                             When(competencescles__unaccent__icontains=word, then=Value(1)),
                             When(principales_missions__unaccent__icontains=word, then=Value(1)),
@@ -165,10 +165,10 @@ class MetierRecommendationsView(generics.GenericAPIView):
                 )
             )
             # Sort the queryset by the number of words found in descending order
-            queryset = queryset.order_by('-word_count', 'titre')
+            queryset = queryset.order_by('-word_count', 'nom')
         else:
             # If search parameter is None, order by ascending order of titre field
-            queryset = queryset.order_by('titre')
+            queryset = queryset.order_by('nom')
         return queryset
 
     def get(self,request,*args,**kwargs):
