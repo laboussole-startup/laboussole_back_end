@@ -28,6 +28,7 @@ class MetiersListView(generics.GenericAPIView):
         queryset = Metiers.objects.all()
         search_query = self.request.query_params.get('search', None)
         if search_query:
+            search_query = search_query.strip()
             # Create a Q object to combine multiple OR conditions
             conditions = Q()
             for word in search_query.split():
@@ -135,6 +136,7 @@ class MetierRecommendationsView(generics.GenericAPIView):
         queryset = Metiers.objects.all()
         search_query = self.request.query_params.get('search', None)
         if search_query:
+            search_query = search_query.strip()
             conditions = Q()
             for word in search_query.split():
                 conditions |= (
