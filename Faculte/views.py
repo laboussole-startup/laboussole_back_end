@@ -4,8 +4,9 @@ from . import serializers
 from rest_framework import generics,status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly
-from django.db.models import Q, Sum, Case, When, Value, IntegerField
+from django.db.models import F, Q, Sum, Case, When, Value, IntegerField
 from django.db.models.functions import Length
+from rest_framework.pagination import PageNumberPagination
 
 # Create your views here.
 
@@ -124,3 +125,64 @@ class UniversityFacultiesView(generics.GenericAPIView):
         serializer = self.serializer_class(instance=faculties,many=True)
 
         return Response(data=serializer.data,status=status.HTTP_200_OK)
+
+class EcoleRecommendationsView(generics.GenericAPIView):
+
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    serializer_class = serializers.FaculteCreationSerializer
+
+    queryset = Faculte.objects.all()
+
+    pagination_class = PageNumberPagination
+
+    def get_queryset(self):
+        queryset = Faculte.objects.all()
+        search_query = self.request.query_params.get('search', None)
+        if search_query:
+            search_query = search_query.strip()
+            conditions = Q()
+            for word in search_query.split():
+                conditions |= (
+                    Q(nom__unaccent__icontains=word) |
+                    Q(descriptif__unaccent__icontains=word)
+                )
+            queryset = queryset.filter(conditions)
+            queryset = queryset.annotate(
+                nom_word_count=Sum(
+                    Case(
+                        When(nom__unaccent__icontains=word, then=Value(1)),
+                        default=Value(0),
+                        output_field=IntegerField(),
+                    )
+                ),
+                description_word_count=Sum(
+                    Case(
+                        When(descriptif__unaccent__icontains=word, then=Value(1)),
+                        default=Value(0),
+                        output_field=IntegerField(),
+                    )
+                )
+            )
+            queryset = queryset.annotate(
+                total_word_count=F('nom_word_count') + F('description_word_count')
+            )
+            queryset = queryset.order_by(
+                '-total_word_count',  # Sort by the total aggregated word count in descending order
+                'nom'  # Secondary sorting by another field, e.g., 'nom'
+            )
+        else:
+            queryset = queryset.order_by('nom')  # If search parameter is None, order by ascending order of nom field
+        return queryset
+
+    def get(self,request,*args,**kwargs):
+        queryset = self.get_queryset()
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)  # Paginate the queryset
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(data=serializer.data,status=status.HTTP_200_OK)
+        
