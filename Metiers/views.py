@@ -135,40 +135,54 @@ class MetierRecommendationsView(generics.GenericAPIView):
         queryset = Metiers.objects.all()
         search_query = self.request.query_params.get('search', None)
         if search_query:
-            # Split the search query into individual words
-            search_words = search_query.split()
-            # Create a Q object to combine multiple OR conditions
             conditions = Q()
-            for word in search_words:
-                # Add OR condition for each word in the search query
+            for word in search_query.split():
                 conditions |= (
                     Q(nom__unaccent__icontains=word) |
                     Q(description__unaccent__icontains=word) |
                     Q(competencescles__unaccent__icontains=word) |
                     Q(principales_missions__unaccent__icontains=word)
                 )
-            # Apply the filter
             queryset = queryset.filter(conditions)
-            # Annotate queryset with count of words from search query found in specified fields
             queryset = queryset.annotate(
-                word_count=Sum(
+                nom_word_count=Sum(
                     Case(
-                        [
-                            When(nom__unaccent__icontains=word, then=Value(1)),
-                            When(description__unaccent__icontains=word, then=Value(1)),
-                            When(competencescles__unaccent__icontains=word, then=Value(1)),
-                            When(principales_missions__unaccent__icontains=word, then=Value(1)),
-                        ],
+                        When(nom__unaccent__icontains=word, then=Value(1)),
+                        default=Value(0),
+                        output_field=IntegerField(),
+                    )
+                ),
+                description_word_count=Sum(
+                    Case(
+                        When(description__unaccent__icontains=word, then=Value(1)),
+                        default=Value(0),
+                        output_field=IntegerField(),
+                    )
+                ),
+                competencescles_word_count=Sum(
+                    Case(
+                        When(competencescles__unaccent__icontains=word, then=Value(1)),
+                        default=Value(0),
+                        output_field=IntegerField(),
+                    )
+                ),
+                principales_missions_word_count=Sum(
+                    Case(
+                        When(principales_missions__unaccent__icontains=word, then=Value(1)),
                         default=Value(0),
                         output_field=IntegerField(),
                     )
                 )
             )
-            # Sort the queryset by the number of words found in descending order
-            queryset = queryset.order_by('-word_count', 'nom')
+            queryset = queryset.annotate(
+                total_word_count=F('nom_word_count') + F('description_word_count') + F('competencescles_word_count') + F('principales_missions_word_count')
+            )
+            queryset = queryset.order_by(
+                '-total_word_count',  # Sort by the total aggregated word count in descending order
+                'nom'  # Secondary sorting by another field, e.g., 'nom'
+            )
         else:
-            # If search parameter is None, order by ascending order of titre field
-            queryset = queryset.order_by('nom')
+            queryset = queryset.order_by('nom')  # If search parameter is None, order by ascending order of nom field
         return queryset
 
     def get(self,request,*args,**kwargs):
