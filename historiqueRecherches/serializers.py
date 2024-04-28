@@ -4,7 +4,7 @@ from rest_framework import serializers
 
 
 class RecherchesCreationSerializer(serializers.ModelSerializer):
-    id_utilisateur = serializers.IntegerField(source="id_utilisateur")
+    id_utilisateur = serializers.IntegerField()
     date_heure = serializers.DateTimeField()
     mots_cles = serializers.CharField()
 
