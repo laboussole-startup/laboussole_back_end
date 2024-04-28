@@ -16,8 +16,8 @@ class Actualit(models.Model):
     contenu = models.TextField(blank=True, null=True)
     domaine = models.CharField(max_length=255, blank=True, null=True)
     image_pc = models.TextField(blank=True, null=True)
+    image_telephone = models.TextField(blank=True, null=True)
     image_tablette = models.TextField(blank=True, null=True)
-    image_desktop = models.TextField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -117,11 +117,13 @@ class Metiers(models.Model):
     salairemoyen = models.TextField(blank=True, null=True)
     competencescles = models.TextField(blank=True, null=True)
     logo = models.TextField(blank=True, null=True)
-    filieres = models.ForeignKey(Filieres, models.DO_NOTHING, blank=True, null=True)
     images_pc = models.CharField(max_length=255, blank=True, null=True)
     principales_missions = models.TextField(blank=True, null=True)
     images_telephone = models.CharField(max_length=255, blank=True, null=True)
     images_tablettes = models.CharField(max_length=255, blank=True, null=True)
+    faculte = models.TextField(blank=True, null=True)
+    ecole = models.TextField(blank=True, null=True)
+    filiere = models.TextField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -134,13 +136,24 @@ class Notification(models.Model):
     contenu = models.TextField(blank=True, null=True)
     statut = models.CharField(max_length=255, blank=True, null=True)
     nationalité = models.CharField(max_length=255, blank=True, null=True)
+    date = models.DateTimeField(blank=True, null=True)
     image_pc = models.TextField(blank=True, null=True)
+    image_telephone = models.TextField(blank=True, null=True)
     image_tablette = models.TextField(blank=True, null=True)
-    image_desktop = models.TextField(blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'notification'
+
+
+class Recherches(models.Model):
+    id_utilisateur = models.ForeignKey('Utilisateur', models.DO_NOTHING, db_column='id_utilisateur', blank=True, null=True)
+    date_heure = models.DateTimeField(blank=True, null=True)
+    mots_cles = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'recherches'
 
 
 class Temoignage(models.Model):
@@ -173,3 +186,27 @@ class Universite(models.Model):
     class Meta:
         managed = False
         db_table = 'universite'
+
+
+class Utilisateur(models.Model):
+    id_utilisateur = models.AutoField(primary_key=True)
+    nom = models.CharField(max_length=255, blank=True, null=True)
+    prenom = models.CharField(max_length=255, blank=True, null=True)
+    pays = models.CharField(max_length=255, blank=True, null=True)
+    ville = models.CharField(max_length=255, blank=True, null=True)
+    niveau = models.CharField(max_length=50, blank=True, null=True)
+    genre = models.CharField(max_length=10, blank=True, null=True)
+    date_de_naissance = models.DateField(blank=True, null=True)
+    mail = models.CharField(max_length=255, blank=True, null=True)
+    mot_de_passe = models.CharField(max_length=255, blank=True, null=True)
+    telephone = models.CharField(max_length=20, blank=True, null=True)
+    centre_interet = models.TextField(blank=True, null=True)
+    photo_de_profil = models.CharField(max_length=255, blank=True, null=True)
+    dernier_diplome = models.CharField(max_length=255, blank=True, null=True)
+    serie = models.CharField(max_length=50, blank=True, null=True)
+    derniere_connexion = models.DateTimeField(blank=True, null=True)
+    date_inscription = models.DateTimeField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'utilisateur'

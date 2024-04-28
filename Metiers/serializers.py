@@ -16,8 +16,11 @@ class MetiersCreationSerializer(serializers.ModelSerializer):
     principales_missions = serializers.CharField()
     images_telephone = serializers.CharField()
     images_tablettes = serializers.CharField()
+    faculte = serializers.CharField()
+    ecole = serializers.CharField()
+    filiere = serializers.CharField()
 
     class Meta:
 
         model = Metiers
-        fields = ['id_metiers','nom','description','entreprisesrecrutent','salairemoyen','competencescles','logo','filieres','images_pc','principales_missions','images_telephone','images_tablettes']
+        fields = ['id_metiers','nom','description','entreprisesrecrutent','salairemoyen','competencescles','logo','filieres','images_pc','principales_missions','images_telephone','images_tablettes','faculte','ecole','filiere']

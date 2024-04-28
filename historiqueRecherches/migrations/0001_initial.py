@@ -12,13 +12,14 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='CentreInteret',
+            name='Recherches',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('nom', models.CharField(blank=True, max_length=255, null=True)),
+                ('date_heure', models.DateTimeField(blank=True, null=True)),
+                ('mots_cles', models.CharField(blank=True, max_length=255, null=True)),
             ],
             options={
-                'db_table': 'centre_interet',
+                'db_table': 'recherches',
                 'managed': False,
             },
         ),

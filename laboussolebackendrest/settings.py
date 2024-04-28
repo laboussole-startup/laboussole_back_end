@@ -77,7 +77,8 @@ INSTALLED_APPS = [
     'Temoignage.apps.TemoignageConfig',
     'Universite.apps.UniversiteConfig',
     'actualites.apps.ActualitesConfig',
-    'notification.apps.NotificationConfig'
+    'notification.apps.NotificationConfig',
+    'historiqueRecherches.apps.HistoriquerecherchesConfig',
 ]
 
 AUTH_USER_MODEL = 'authentication.Utilisateur'

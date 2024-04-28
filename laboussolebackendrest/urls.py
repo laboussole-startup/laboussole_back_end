@@ -31,6 +31,7 @@ urlpatterns = [
     path('actualites/',include('actualites.urls')),
     path('notifications/',include('notification.urls')),
     path('filieres/',include('Filieres.urls')),
+    path('historique_recherches/',include('historiqueRecherches.urls')),
     path('metiers/',include('Metiers.urls')),
     path('temoignages/',include('Temoignage.urls')),
     path('universites/',include('Universite.urls')),

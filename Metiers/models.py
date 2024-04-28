@@ -17,6 +17,9 @@ class Metiers(models.Model):
     principales_missions = models.TextField(blank=True, null=True)
     images_telephone = models.CharField(max_length=255, blank=True, null=True)
     images_tablettes = models.CharField(max_length=255, blank=True, null=True)
+    faculte = models.TextField(blank=True, null=True)
+    ecole = models.TextField(blank=True, null=True)
+    filiere = models.TextField(blank=True, null=True)
 
     class Meta:
         managed = False
