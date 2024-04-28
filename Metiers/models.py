@@ -12,7 +12,6 @@ class Metiers(models.Model):
     salairemoyen = models.TextField(blank=True, null=True)
     competencescles = models.TextField(blank=True, null=True)
     logo = models.TextField(blank=True, null=True)
-    filieres = models.ForeignKey(Filieres, models.DO_NOTHING, blank=True, null=True)
     images_pc = models.CharField(max_length=255, blank=True, null=True)
     principales_missions = models.TextField(blank=True, null=True)
     images_telephone = models.CharField(max_length=255, blank=True, null=True)
