@@ -9,11 +9,11 @@ class NotificationCreationSerializer(serializers.ModelSerializer):
     nationalité = serializers.CharField()
     image_pc = serializers.CharField()
     image_tablette = serializers.CharField()
-    image_desktop = serializers.CharField()
+    image_telephone = serializers.CharField()
     date = serializers.DateTimeField()
 
     class Meta:
 
         model = Notification
-        fields = ['id_notification','titre','contenu','statut','nationalité','image_pc','image_desktop','image_tablette','date']
+        fields = ['id_notification','titre','contenu','statut','nationalité','image_pc','image_telephone','image_tablette','date']
 
