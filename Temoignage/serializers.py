@@ -13,4 +13,4 @@ class TemoignageCreationSerializer(serializers.ModelSerializer):
     class Meta:
 
         model = Temoignage
-        fields = ['id_temoignage','nom','telephone','contenu','profession','Score']
+        fields = ['id_temoignage','nom','telephone','contenu','profession']
