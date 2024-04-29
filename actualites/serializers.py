@@ -10,11 +10,11 @@ class ActualitCreationSerializer(serializers.ModelSerializer):
     domaine = serializers.CharField()
     image_pc = serializers.CharField()
     image_tablette = serializers.CharField()
-    image_desktop = serializers. CharField()
+    image_telephone = serializers. CharField()
 
     class Meta:
 
         model = Actualit
-        fields = ['id_actualite','titre','date','nom','contenu','domaine','image_pc','image_desktop','image_tablette']
+        fields = ['id_actualite','titre','date','nom','contenu','domaine','image_pc','image_telephone','image_tablette']
 
     

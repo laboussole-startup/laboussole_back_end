@@ -11,7 +11,7 @@ class Actualit(models.Model):
     domaine = models.CharField(max_length=255, blank=True, null=True)
     image_pc = models.TextField(blank=True, null=True)
     image_tablette = models.TextField(blank=True, null=True)
-    image_desktop = models.TextField(blank=True, null=True)
+    image_telephone = models.TextField(blank=True, null=True)
 
     class Meta:
         managed = False
