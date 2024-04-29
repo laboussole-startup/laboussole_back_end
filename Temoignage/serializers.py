@@ -8,7 +8,6 @@ class TemoignageCreationSerializer(serializers.ModelSerializer):
     telephone = serializers.CharField(max_length=20)
     contenu = serializers.CharField()
     profession = serializers.CharField(max_length=255)
-    Score = serializers.IntegerField()
 
     class Meta:
 
