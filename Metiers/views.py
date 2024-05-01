@@ -197,4 +197,32 @@ class MetierRecommendationsView(generics.GenericAPIView):
         
         serializer = self.get_serializer(queryset, many=True)
         return Response(data=serializer.data,status=status.HTTP_200_OK)
+
+
+
+class DebouchesView(generics.GenericAPIView):
+
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    serializer_class = serializers.MetiersCreationSerializer
+
+    queryset = Metiers.objects.all()
+
+    pagination_class = PageNumberPagination
+
+    def get_queryset(self):
+        faculte_id = self.kwargs.get('faculte_id')  # Get faculte_id from URL
+        return Metiers.objects.filter(faculte__icontains=faculte_id)
+
+    def get(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        page = self.paginate_queryset(queryset)
+
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
         
+
