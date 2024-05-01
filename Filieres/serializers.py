@@ -20,4 +20,4 @@ class FilieresCreationSerializer(serializers.ModelSerializer):
     class Meta:
 
         model = Filieres
-        fields = ['nom','descriptif','duree','cout','langue_enseignement','diplome_delivre','faculte','images_pc','images_telephone','images_tablettes','centre_interet']
+        fields = ['filieres_id','nom','descriptif','duree','cout','langue_enseignement','diplome_delivre','faculte','images_pc','images_telephone','images_tablettes','centre_interet']
