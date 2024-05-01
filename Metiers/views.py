@@ -219,7 +219,7 @@ class DebouchesView(generics.GenericAPIView):
         # Create a Q object to combine queries for each word using OR operator
         query = Q()
         for word in faculte_words:
-            query |= Q(faculte__icontains=', ' + word + ',') | Q(faculte__startswith=word + ',') | Q(faculte_startswith='{' + word + ',') | Q(faculte__endswith=', ' + word) | Q(faculte__endswith=', '+word+'}') | Q(faculte__icontains='{' + word + '}')
+            query |= Q(faculte__icontains=', ' + word + ',') | Q(faculte__startswith=word + ',') | Q(faculte__startswith='{' + word + ',') | Q(faculte__endswith=', ' + word) | Q(faculte__endswith=', '+word+'}') | Q(faculte__icontains='{' + word + '}')
 
         # Filter Metiers objects where any word in faculte_id is contained in the faculte field
         return Metiers.objects.filter(query)
