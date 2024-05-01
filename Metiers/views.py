@@ -248,20 +248,21 @@ class FilieresDebouchesView(generics.GenericAPIView):
 
     def get_queryset(self):
 
-        faculte_id = self.kwargs.get('filiere_id')
+        filiere_id = self.kwargs.get('filiere_id')
         # Split faculte_id into individual words
-        faculte_words = faculte_id.split()
+        filiere_words = filiere_id.split()
 
         # Create a Q object to combine queries for each word using OR operator
         query = Q()
-        for word in faculte_words:
+        for word in filiere_words:
             query |= Q(filiere__icontains=', ' + word + ',') | Q(filiere__startswith=word + ',') | Q(filiere__startswith='{' + word + ',') | Q(filiere__endswith=', ' + word) | Q(filiere__endswith=', '+word+'}') | Q(filiere__icontains='{' + word + '}')
 
         # Filter Metiers objects where any word in faculte_id is contained in the faculte field
         return Metiers.objects.filter(query)
 
     def get(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
+        queryset = self.get_queryset();
+        
         page = self.paginate_queryset(queryset)
 
         if page is not None:
