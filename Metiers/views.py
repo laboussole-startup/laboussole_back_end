@@ -211,8 +211,18 @@ class DebouchesView(generics.GenericAPIView):
     pagination_class = PageNumberPagination
 
     def get_queryset(self):
-        faculte_id = self.kwargs.get('faculte_id')  # Get faculte_id from URL
-        return Metiers.objects.filter(faculte__icontains=faculte_id)
+
+        faculte_id = self.kwargs.get('faculte_id')
+        # Split faculte_id into individual words
+        faculte_words = faculte_id.split()
+
+        # Create a Q object to combine queries for each word using OR operator
+        query = Q()
+        for word in faculte_words:
+            query |= Q(faculte__icontains=word)
+
+        # Filter Metiers objects where any word in faculte_id is contained in the faculte field
+        return Metiers.objects.filter(query)
 
     def get(self, request, *args, **kwargs):
         queryset = self.get_queryset()
@@ -223,6 +233,7 @@ class DebouchesView(generics.GenericAPIView):
             return self.get_paginated_response(serializer.data)
 
         serializer = self.get_serializer(queryset, many=True)
+        
         return Response(serializer.data, status=status.HTTP_200_OK)
         
 
