@@ -200,7 +200,7 @@ class MetierRecommendationsView(generics.GenericAPIView):
 
 
 
-class DebouchesView(generics.GenericAPIView):
+class FacultesDebouchesView(generics.GenericAPIView):
 
     permission_classes = [IsAuthenticatedOrReadOnly]
 
@@ -235,5 +235,41 @@ class DebouchesView(generics.GenericAPIView):
         serializer = self.get_serializer(queryset, many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
-        
+
+class FilieresDebouchesView(generics.GenericAPIView):
+
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    serializer_class = serializers.MetiersCreationSerializer
+
+    queryset = Metiers.objects.all()
+
+    pagination_class = PageNumberPagination
+
+    def get_queryset(self):
+
+        faculte_id = self.kwargs.get('filiere_id')
+        # Split faculte_id into individual words
+        faculte_words = faculte_id.split()
+
+        # Create a Q object to combine queries for each word using OR operator
+        query = Q()
+        for word in faculte_words:
+            query |= Q(filiere__icontains=', ' + word + ',') | Q(filiere__startswith=word + ',') | Q(filiere__startswith='{' + word + ',') | Q(filiere__endswith=', ' + word) | Q(filiere__endswith=', '+word+'}') | Q(filiere__icontains='{' + word + '}')
+
+        # Filter Metiers objects where any word in faculte_id is contained in the faculte field
+        return Metiers.objects.filter(query)
+
+    def get(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        page = self.paginate_queryset(queryset)
+
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+         
 
