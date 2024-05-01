@@ -219,7 +219,7 @@ class DebouchesView(generics.GenericAPIView):
         # Create a Q object to combine queries for each word using OR operator
         query = Q()
         for word in faculte_words:
-            query |= Q(faculte__icontains=word)
+            query |= Q(faculte__icontains=',' + word + ',') | Q(faculte__startswith=word + ',') | Q(faculte__endswith=',' + word)
 
         # Filter Metiers objects where any word in faculte_id is contained in the faculte field
         return Metiers.objects.filter(query)
@@ -233,7 +233,7 @@ class DebouchesView(generics.GenericAPIView):
             return self.get_paginated_response(serializer.data)
 
         serializer = self.get_serializer(queryset, many=True)
-        
+
         return Response(serializer.data, status=status.HTTP_200_OK)
         
 
