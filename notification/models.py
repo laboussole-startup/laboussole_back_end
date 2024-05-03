@@ -15,3 +15,6 @@ class Notification(models.Model):
     class Meta:
         managed = False
         db_table = 'notification'
+
+    def __str__(self) -> str:
+        return f"<Notif {self.titre}"

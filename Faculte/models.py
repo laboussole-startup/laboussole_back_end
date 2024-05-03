@@ -19,3 +19,6 @@ class Faculte(models.Model):
     class Meta:
         managed = False
         db_table = 'faculte'
+
+    def __str__(self) -> str:
+        return f"<Faculte {self.nom}"

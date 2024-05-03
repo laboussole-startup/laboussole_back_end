@@ -11,3 +11,6 @@ class CentreInteret(models.Model):
     class Meta:
         managed = False
         db_table = 'centre_interet'
+    
+    def __str__(self) -> str:
+        return f"<Centre Interet {self.nom}"

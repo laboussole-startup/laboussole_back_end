@@ -21,3 +21,6 @@ class Filieres(models.Model):
     class Meta:
         managed = False
         db_table = 'filieres'
+
+    def __str__(self) -> str:
+        return f"<Filiere {self.nom}"

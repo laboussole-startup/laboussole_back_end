@@ -25,3 +25,6 @@ class BourseEtude(models.Model):
     class Meta:
         managed = False
         db_table = 'bourse_etude'
+
+    def __str__(self) -> str:
+        return f"<Bourse {self.nom}"

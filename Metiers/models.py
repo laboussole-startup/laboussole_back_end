@@ -23,3 +23,6 @@ class Metiers(models.Model):
     class Meta:
         managed = False
         db_table = 'metiers'
+
+    def __str__(self) -> str:
+        return f"<Metier {self.nom}"

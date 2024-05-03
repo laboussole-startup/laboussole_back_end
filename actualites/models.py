@@ -13,6 +13,9 @@ class Actualit(models.Model):
     image_tablette = models.TextField(blank=True, null=True)
     image_telephone = models.TextField(blank=True, null=True)
 
+    def __str__(self) -> str:
+        return f"<Actualite {self.id_titre}"
+
     class Meta:
         managed = False
         db_table = 'actualité'

@@ -14,3 +14,6 @@ class Temoignage(models.Model):
     class Meta:
         managed = False
         db_table = 'temoignage'
+
+    def __str__(self) -> str:
+        return f"<Tem {self.nom}"
