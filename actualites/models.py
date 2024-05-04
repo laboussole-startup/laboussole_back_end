@@ -14,7 +14,7 @@ class Actualit(models.Model):
     image_telephone = models.TextField(blank=True, null=True)
 
     def __str__(self) -> str:
-        return f"<Actualite {self.id_titre}"
+        return f"<Actualite {self.nom}"
 
     class Meta:
         managed = False
