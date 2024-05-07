@@ -23,4 +23,4 @@ class Filieres(models.Model):
         db_table = 'filieres'
 
     def __str__(self) -> str:
-        return f"<Filiere {self.nom}"
+        return f"<Filiere {self.filieres_id}--> {self.nom}"

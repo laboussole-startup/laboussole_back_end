@@ -21,4 +21,4 @@ class Faculte(models.Model):
         db_table = 'faculte'
 
     def __str__(self) -> str:
-        return f"<Faculte {self.nom}"
+        return f"<Faculte {self.faculte_id}-->{self.nom}"

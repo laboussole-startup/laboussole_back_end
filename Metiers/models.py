@@ -25,4 +25,4 @@ class Metiers(models.Model):
         db_table = 'metiers'
 
     def __str__(self) -> str:
-        return f"<Metier {self.nom}"
+        return f"<Metier {self.id_metiers}--> {self.nom}"
