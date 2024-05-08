@@ -57,7 +57,10 @@ class RecoverPasswordView(generics.GenericAPIView):
         user = get_object_or_404(Utilisateur, email=user_email)
         serializer = self.serializer_class(instance=user, context={'request': request})
         subject = "RECUPERATION DE COMPTE"
-        message = "CODE DE RECUPERATION -->" + random.randint(10000, 99999)
+        random_number = str(random.randint(10000, 99999))
+
+        # Concatenate the message with the random number
+        message = "CODE DE RECUPERATION --> " + random_number
         send_mail(subject,message,[user_email],fail_silently=True)
         return Response({"status":"CODE_SENT"}, status=status.HTTP_200_OK)
 
