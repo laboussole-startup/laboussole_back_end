@@ -53,7 +53,7 @@ class UserGetDetailView(generics.GenericAPIView):
 class RecoverPasswordView(generics.GenericAPIView):
     serializer_class = serializers.UserDetailSerializer  # Update to appropriate serializer
 
-    def post(self, request, user_email):
+    def get(self, request, user_email):
         user = get_object_or_404(Utilisateur, email=user_email)
         serializer = self.serializer_class(instance=user, context={'request': request})
         subject = "RECUPERATION DE COMPTE"
