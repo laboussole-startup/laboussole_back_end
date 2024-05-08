@@ -1,3 +1,4 @@
+import random
 from django.shortcuts import render,get_object_or_404
 from .models import Utilisateur
 from . import serializers
@@ -5,6 +6,10 @@ from rest_framework.views import APIView
 from rest_framework import generics,status
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser,FormParser
+
+from django.core.mail import send_mail,EmailMessage
+
+from laboussolebackendrest.settings import EMAIL_HOST_USER
 
 # Create your views here.
 
@@ -44,4 +49,16 @@ class UserGetDetailView(generics.GenericAPIView):
             serializer.save()
             return Response(data=serializer.data, status=status.HTTP_200_OK)
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class RecoverPasswordView(generics.GenericAPIView):
+    serializer_class = serializers.UserDetailSerializer  # Update to appropriate serializer
+
+    def post(self, request, user_email):
+        user = get_object_or_404(Utilisateur, email=user_email)
+        serializer = self.serializer_class(instance=user, context={'request': request})
+        subject = "RECUPERATION DE COMPTE"
+        message = "CODE DE RECUPERATION -->" + random.randint(10000, 99999)
+        send_mail(subject,message,[user_email],fail_silently=True)
+        return Response({"status":"CODE_SENT"}, status=status.HTTP_200_OK)
+       
 
