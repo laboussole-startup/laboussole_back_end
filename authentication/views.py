@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 from rest_framework import generics,status
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser,FormParser
+from django.contrib.auth.hashers import make_password
 
 from django.core.mail import send_mail,EmailMessage
 
@@ -59,8 +60,11 @@ class RecoverPasswordView(generics.GenericAPIView):
         subject = "RECUPERATION DE COMPTE"
         random_number = str(random.randint(10000, 99999))
 
+        user.password = make_password(random_number)
+        user.save()
+
         # Concatenate the message with the random number
-        message = "CODE DE RECUPERATION --> " + random_number
+        message = "NOUVEAU MOT DE PASS --> " + random_number
         send_mail(subject,message,EMAIL_HOST_USER,[user_email],fail_silently=True)
         return Response({"status":"CODE_SENT"}, status=status.HTTP_200_OK)
 
