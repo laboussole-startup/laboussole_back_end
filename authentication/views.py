@@ -60,5 +60,6 @@ class RecoverPasswordView(generics.GenericAPIView):
         message = "CODE DE RECUPERATION -->" + random.randint(10000, 99999)
         send_mail(subject,message,[user_email],fail_silently=True)
         return Response({"status":"CODE_SENT"}, status=status.HTTP_200_OK)
+
        
 
