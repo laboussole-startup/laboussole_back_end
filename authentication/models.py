@@ -65,6 +65,7 @@ class Utilisateur(AbstractUser):
     last_login = models.DateTimeField(auto_now=True, null=True)
     date_joined = models.DateTimeField(auto_now_add=True, null=True)
     date_inscription = models.DateTimeField(auto_now_add=True, null=True)
+    account_verification=models.IntegerField(blank=True,null=True)
 
     class Meta:
         managed = True

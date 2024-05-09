@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from rest_framework import generics,status
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser,FormParser
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password,check_password
 
 from django.core.mail import send_mail,EmailMessage
 
@@ -60,13 +60,37 @@ class RecoverPasswordView(generics.GenericAPIView):
         subject = "RECUPERATION DE COMPTE"
         random_number = str(random.randint(10000, 99999))
 
-        user.password = make_password(random_number)
+        user.account_verification = make_password(random_number)
         user.save()
 
         # Concatenate the message with the random number
         message = "NOUVEAU MOT DE PASS --> " + random_number
         send_mail(subject,message,EMAIL_HOST_USER,[user_email],fail_silently=True)
         return Response({"status":"CODE_SENT"}, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        user_email = request.data.get('user_email')
+        typed_code = request.data.get('code')
+        new_password = request.data.get('new_password')
+
+        # Fetch the user based on the provided email
+        user = get_object_or_404(Utilisateur, email=user_email)
+
+        # Retrieve the saved verification code for the user
+        saved_code = user.account_verification
+
+        # Check if the typed code matches the saved code
+        if check_password(typed_code, saved_code):
+            # Code matches, update the user's password
+            user.set_password(new_password)
+            user.save()
+            return Response({"status": "PASSWORD_UPDATED"}, status=status.HTTP_200_OK)
+        else:
+            # Code doesn't match
+            return Response({"status": "CODE_MISMATCH"}, status=status.HTTP_400_BAD_REQUEST)
+        
+
+
 
        
 
