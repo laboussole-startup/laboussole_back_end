@@ -88,6 +88,26 @@ class RecoverPasswordView(generics.GenericAPIView):
         else:
             # Code doesn't match
             return Response({"status": "CODE_MISMATCH"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ContactUsView(generics.GenericAPIView):
+    serializer_class = serializers.ContactUsSerializer  # Update to appropriate serializer
+
+    def post(self, request,user_email):
+        user_email = request.data.get('user_email')
+        message = request.data.get('message')
+
+        # Fetch the user based on the provided email
+        user = get_object_or_404(Utilisateur, email=user_email)
+
+        subject = "MESSAGE UTILISATEUR LABOUSSOLE"
+
+        # Concatenate the message with the random number
+        message = user_email + "  --> " + message
+        send_mail(subject,message,EMAIL_HOST_USER,[EMAIL_HOST_USER],fail_silently=True)
+        return Response({"status":"MESSAGE_SENT"}, status=status.HTTP_200_OK)
+
+
         
 
 

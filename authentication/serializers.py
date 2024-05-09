@@ -129,3 +129,18 @@ class PasswordRecoverySerializer(serializers.Serializer):
         # Perform additional validation for the code field if needed
 
         return data
+
+class ContactUsSerializer(serializers.Serializer):
+    user_email = serializers.EmailField()
+    message = serializers.CharField(max_length=500)
+
+    def validate(self, data):
+        user_email = data.get('user_email')
+
+        # Validate that the user with the provided email exists
+        if not Utilisateur.objects.filter(email=user_email).exists():
+            raise serializers.ValidationError("User with this email does not exist.")
+
+        # Perform additional validation for the code field if needed
+
+        return data
