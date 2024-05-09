@@ -1,4 +1,6 @@
 from .models import Utilisateur
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
 from rest_framework import serializers
 
 
@@ -110,6 +112,13 @@ class UserDetailSerializer(serializers.ModelSerializer):
             # Assuming you have a method to hash passwords, replace `hash_password` with that
             instance.set_password(password)
 
+        new_profile_image = validated_data.get('photo_de_profil')
+        if new_profile_image and instance.photo_de_profil:
+            # Delete the previous profile image
+            if default_storage.exists(instance.photo_de_profil.name):
+                default_storage.delete(instance.photo_de_profil.name)
+
+        # Save the instance
         instance.save()
         return instance
 
