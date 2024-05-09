@@ -68,7 +68,7 @@ class RecoverPasswordView(generics.GenericAPIView):
         send_mail(subject,message,EMAIL_HOST_USER,[user_email],fail_silently=True)
         return Response({"status":"CODE_SENT"}, status=status.HTTP_200_OK)
 
-    def post(self, request):
+    def post(self, request,user_email):
         user_email = request.data.get('user_email')
         typed_code = request.data.get('code')
         new_password = request.data.get('new_password')
