@@ -94,6 +94,13 @@ class UserDetailSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
 
+
+        new_profile_image = validated_data.get('photo_de_profil')
+        if new_profile_image and instance.photo_de_profil:
+            # Delete the previous profile image
+            if default_storage.exists(instance.photo_de_profil.name):
+                default_storage.delete(instance.photo_de_profil.name)
+
         instance.username = validated_data.get('username', instance.username)
         instance.first_name = validated_data.get('first_name', instance.first_name)
         instance.last_name = validated_data.get('last_name', instance.last_name)
@@ -112,11 +119,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
             # Assuming you have a method to hash passwords, replace `hash_password` with that
             instance.set_password(password)
 
-        new_profile_image = validated_data.get('photo_de_profil')
-        if new_profile_image and instance.photo_de_profil:
-            # Delete the previous profile image
-            if default_storage.exists(instance.photo_de_profil.name):
-                default_storage.delete(instance.photo_de_profil.name)
+        
 
         # Save the instance
         instance.save()
