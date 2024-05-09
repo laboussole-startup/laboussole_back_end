@@ -52,7 +52,7 @@ class UserGetDetailView(generics.GenericAPIView):
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class RecoverPasswordView(generics.GenericAPIView):
-    serializer_class = serializers.UserDetailSerializer  # Update to appropriate serializer
+    serializer_class = serializers.PasswordRecoverySerializer  # Update to appropriate serializer
 
     def get(self, request, user_email):
         user = get_object_or_404(Utilisateur, email=user_email)
