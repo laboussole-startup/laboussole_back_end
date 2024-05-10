@@ -43,7 +43,7 @@ class FaculteListView(generics.GenericAPIView):
             )
             # Sort the queryset by the number of words found in descending order
             queryset = queryset.order_by('-word_count', 'nom')
-        elif pays_query:
+        if pays_query:
             # Filter by country if pays_query is provided
             queryset = queryset.filter(universite__pays=pays_query)
         else:
