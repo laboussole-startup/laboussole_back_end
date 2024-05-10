@@ -21,13 +21,15 @@ class FaculteListView(generics.GenericAPIView):
     def get_queryset(self):
         queryset = Faculte.objects.all()
         search_query = self.request.query_params.get('search', None)
+        pays_query = self.request.query_params.get('pays', None)
+    
         if search_query:
-            # Create a Q object to combine multiple OR conditions
+            # Create a Q object to combine multiple OR conditions for search
             conditions = Q()
             for word in search_query.split():
-                # Add OR condition for each word in the search query
+            # Add OR condition for each word in the search query
                 conditions |= Q(nom__unaccent__icontains=word)
-            # Apply the filter
+            # Apply the filter for search query
             queryset = queryset.filter(conditions)
             # Annotate queryset with count of words from search query found in nom field
             queryset = queryset.annotate(
@@ -41,9 +43,13 @@ class FaculteListView(generics.GenericAPIView):
             )
             # Sort the queryset by the number of words found in descending order
             queryset = queryset.order_by('-word_count', 'nom')
+        elif pays_query:
+            # Filter by country if pays_query is provided
+            queryset = queryset.filter(universite__pays=pays_query)
         else:
-            # If search parameter is None, order by ascending order of nom field
+            # If neither search nor pays parameter is provided, order by ascending order of nom field
             queryset = queryset.order_by('nom')
+    
         return queryset
 
     def get(self,request):
