@@ -23,14 +23,14 @@ class FaculteListView(generics.GenericAPIView):
         search_query = self.request.query_params.get('search', None)
         pays_query = self.request.query_params.get('pays', None)
     
-        if search_query:
-            # Create a Q object to combine multiple OR conditions for search
+        if search_query and pays_query:
+            # Create a Q object to combine search and country filters with AND logic
             conditions = Q()
             for word in search_query.split():
-            # Add OR condition for each word in the search query
+                # Add OR condition for each word in the search query
                 conditions |= Q(nom__unaccent__icontains=word)
             # Apply the filter for search query
-            queryset = queryset.filter(conditions)
+            queryset = queryset.filter(conditions, universite__pays=pays_query)
             # Annotate queryset with count of words from search query found in nom field
             queryset = queryset.annotate(
                 word_count=Sum(
@@ -43,8 +43,24 @@ class FaculteListView(generics.GenericAPIView):
             )
             # Sort the queryset by the number of words found in descending order
             queryset = queryset.order_by('-word_count', 'nom')
-        if pays_query:
-            # Filter by country if pays_query is provided
+        elif search_query:
+            # Apply only search filter
+            conditions = Q()
+            for word in search_query.split():
+                conditions |= Q(nom__unaccent__icontains=word)
+            queryset = queryset.filter(conditions)
+            queryset = queryset.annotate(
+                word_count=Sum(
+                    Case(
+                        *[When(nom__unaccent__icontains=word, then=Value(1)) for word in search_query.split()],
+                        default=Value(0),
+                        output_field=IntegerField(),
+                    )
+                )
+            )
+            queryset = queryset.order_by('-word_count', 'nom')
+        elif pays_query:
+            # Apply only country filter
             queryset = queryset.filter(universite__pays=pays_query)
         else:
             # If neither search nor pays parameter is provided, order by ascending order of nom field
