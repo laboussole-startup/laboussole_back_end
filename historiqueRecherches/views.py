@@ -13,7 +13,6 @@ class RecherchesListView(generics.GenericAPIView):
 
     queryset = Recherches.objects.all()
 
-    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get(self,request):
 
