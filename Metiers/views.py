@@ -33,7 +33,7 @@ class MetiersListView(generics.GenericAPIView):
             conditions = Q()
             for word in search_query.split():
                 # Add OR condition for each word in the search query
-                conditions |= Q(nom__unaccent__icontains=word) | Q(descriptif__unaccent__icontains=word)
+                conditions |= Q(nom__unaccent__icontains=word) | Q(description__unaccent__icontains=word)
             # Apply the filter
             queryset = queryset.filter(conditions)
             # Annotate queryset with count of words from search query found in nom field
