@@ -173,9 +173,9 @@ class EcoleRecommendationsView(generics.GenericAPIView):
                 )
         
             # Step 1: Filter by Country and Apply Search Conditions
-            filtered_queryset = filtered_queryset.filter(conditions)
+            filtered_queryset = queryset.filter(conditions)
 
-            filtered_queryset = queryset.filter(universite__pays=pays_query)
+            filtered_queryset = filtered_queryset.filter(universite__pays=pays_query)
 
             annotated_queryset = filtered_queryset.annotate(
                 nom_word_count=Sum(
