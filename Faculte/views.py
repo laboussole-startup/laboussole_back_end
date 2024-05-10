@@ -28,7 +28,7 @@ class FaculteListView(generics.GenericAPIView):
             conditions = Q()
             for word in search_query.split():
                 # Add OR condition for each word in the search query
-                conditions |= Q(nom__unaccent__icontains=word)
+                conditions |= Q(nom__unaccent__icontains=word) | Q(descriptif__unaccent__icontains=word)
             # Apply the filter for search query
             queryset = queryset.filter(conditions, universite__pays=pays_query)
             # Annotate queryset with count of words from search query found in nom field
@@ -47,7 +47,7 @@ class FaculteListView(generics.GenericAPIView):
             # Apply only search filter
             conditions = Q()
             for word in search_query.split():
-                conditions |= Q(nom__unaccent__icontains=word)
+                 conditions |= Q(nom__unaccent__icontains=word) | Q(descriptif__unaccent__icontains=word)
             queryset = queryset.filter(conditions)
             queryset = queryset.annotate(
                 word_count=Sum(
@@ -161,7 +161,53 @@ class EcoleRecommendationsView(generics.GenericAPIView):
     def get_queryset(self):
         queryset = Faculte.objects.all()
         search_query = self.request.query_params.get('search', None)
-        if search_query:
+        pays_query = self.request.query_params.get('pays', None)
+    
+        if search_query and pays_query:
+            search_query = search_query.strip()
+            conditions = Q()
+            for word in search_query.split():
+                conditions |= (
+                    Q(nom__unaccent__icontains=word) |
+                    Q(descriptif__unaccent__icontains=word)
+                )
+        
+            # Step 1: Filter by Country and Apply Search Conditions
+            filtered_queryset = filtered_queryset.filter(conditions)
+
+            filtered_queryset = queryset.filter(universite__pays=pays_query)
+
+            annotated_queryset = filtered_queryset.annotate(
+                nom_word_count=Sum(
+                    Case(
+                        When(nom__unaccent__icontains=word, then=Value(1)),
+                        default=Value(0),
+                        output_field=IntegerField(),
+                    )
+                ),
+                description_word_count=Sum(
+                    Case(
+                        When(descriptif__unaccent__icontains=word, then=Value(1)),
+                        default=Value(0),
+                        output_field=IntegerField(),
+                    )
+                )
+            )
+
+            # Step 3: Aggregate Total Word Count
+            aggregated_queryset = annotated_queryset.annotate(
+                total_word_count=F('nom_word_count') + F('description_word_count')
+            )
+
+            # Step 4: Order the Result
+            ordered_queryset = aggregated_queryset.order_by(
+                '-total_word_count',  # Sort by the total aggregated word count in descending order
+                'nom'  # Secondary sorting by another field, e.g., 'nom'
+            )
+
+            queryset = ordered_queryset
+        elif search_query:
+            # Similar code as before for search without pays filter
             search_query = search_query.strip()
             conditions = Q()
             for word in search_query.split():
@@ -185,16 +231,18 @@ class EcoleRecommendationsView(generics.GenericAPIView):
                         output_field=IntegerField(),
                     )
                 )
-            )
-            queryset = queryset.annotate(
+            ).annotate(
                 total_word_count=F('nom_word_count') + F('description_word_count')
-            )
-            queryset = queryset.order_by(
+            ).order_by(
                 '-total_word_count',  # Sort by the total aggregated word count in descending order
                 'nom'  # Secondary sorting by another field, e.g., 'nom'
             )
+        elif pays_query:
+            # If only pays_query is provided, filter by country
+            queryset = queryset.filter(universite__pays=pays_query).order_by('nom')
         else:
-            queryset = queryset.order_by('nom')  # If search parameter is None, order by ascending order of nom field
+            queryset = queryset.order_by('nom')  # If neither search nor pays parameter is provided, order by ascending order of nom field
+
         return queryset
 
     def get(self,request,*args,**kwargs):
