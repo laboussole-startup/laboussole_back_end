@@ -7,6 +7,7 @@ from rest_framework import generics,status
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser,FormParser
 from django.contrib.auth.hashers import make_password,check_password
+from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly
 
 from django.core.mail import send_mail,EmailMessage
 
@@ -19,6 +20,7 @@ class UserCreateView(APIView):
 
     serializer_class = serializers.UserCreationSerializer
     parser_classes = [FormParser,MultiPartParser]
+    
 
     def post(self,request,format=None):
 
@@ -35,6 +37,8 @@ class UserCreateView(APIView):
         return Response(data=serializer.errors ,status=status.HTTP_400_BAD_REQUEST)
 
 class UserGetDetailView(generics.GenericAPIView):
+
+    permission_classes = [IsAuthenticated]
     serializer_class = serializers.UserDetailSerializer  # Update to appropriate serializer
 
     def get(self, request, user_email):
@@ -52,6 +56,7 @@ class UserGetDetailView(generics.GenericAPIView):
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class RecoverPasswordView(generics.GenericAPIView):
+
     serializer_class = serializers.PasswordRecoverySerializer  # Update to appropriate serializer
 
     def get(self, request, user_email):
@@ -91,6 +96,9 @@ class RecoverPasswordView(generics.GenericAPIView):
 
 
 class ContactUsView(generics.GenericAPIView):
+
+    permission_classes = [IsAuthenticated]
+    
     serializer_class = serializers.ContactUsSerializer  # Update to appropriate serializer
 
     def post(self, request,user_email):
