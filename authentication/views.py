@@ -36,9 +36,21 @@ class UserCreateView(APIView):
 
         return Response(data=serializer.errors ,status=status.HTTP_400_BAD_REQUEST)
 
-class UserGetDetailView(generics.GenericAPIView):
+class IsOwnerOrReadOnly(permissions.BasePermission):
+    """
+    Custom permission to only allow owners of an object to edit it.
+    """
+    def has_object_permission(self, request, view, obj):
+        # Read permissions are allowed to any request,
+        # so we'll always allow GET, HEAD or OPTIONS requests.
+        if request.method in permissions.SAFE_METHODS:
+            return True
 
-    permission_classes = [IsAuthenticated]
+        # Write permissions are only allowed to the owner of the snippet.
+        return obj.email == request.user.email
+
+class UserGetDetailView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
     serializer_class = serializers.UserDetailSerializer  # Update to appropriate serializer
 
     def get(self, request, user_email):
@@ -48,6 +60,10 @@ class UserGetDetailView(generics.GenericAPIView):
 
     def put(self, request, user_email):
         user = get_object_or_404(Utilisateur, email=user_email)
+        # Check if the user making the request is the same as the user being updated
+        if user.email != request.user.email:
+            return Response(data={"error": "You don't have permission to perform this action."}, status=status.HTTP_403_FORBIDDEN)
+
         # Update only the email field
         serializer = self.serializer_class(instance=user, data=request.data, partial=True)
         if serializer.is_valid():
@@ -98,7 +114,7 @@ class RecoverPasswordView(generics.GenericAPIView):
 class ContactUsView(generics.GenericAPIView):
 
     permission_classes = [IsAuthenticated]
-    
+
     serializer_class = serializers.ContactUsSerializer  # Update to appropriate serializer
 
     def post(self, request,user_email):
