@@ -1,5 +1,7 @@
 import random
 from django.shortcuts import render,get_object_or_404
+
+import Temoignage
 from .models import Utilisateur
 from . import serializers
 from rest_framework.views import APIView
@@ -8,6 +10,8 @@ from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser,FormParser
 from django.contrib.auth.hashers import make_password,check_password
 from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly,IsAdminUser
+from django.db import transaction
+from Temoignage.models import Temoignage
 
 from django.core.mail import send_mail,EmailMessage
 
@@ -57,12 +61,22 @@ class UserGetDetailView(generics.GenericAPIView):
         if user.email != request.user.email:
             return Response(data={"error": "You don't have permission to perform this action."}, status=status.HTTP_403_FORBIDDEN)
 
-        # Update only the email field
-        serializer = self.serializer_class(instance=user, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(data=serializer.data, status=status.HTTP_200_OK)
-        return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        with transaction.atomic():
+            serializer = self.serializer_class(instance=user, data=request.data, partial=True)
+            if serializer.is_valid():
+                # Check if the update data contains the field "photo_de_profil"
+                if 'photo_de_profil' in request.data:
+                    # Update the Utilisateur model
+                    serializer.save()
+
+                    # Update the tem_photo field in the Temoignage model
+                    Temoignage.objects.filter(nom=request.user.email).update(tem_photo=user.photo_de_profil)
+
+                    return Response(data=serializer.data, status=status.HTTP_200_OK)
+                else:
+                    serializer.save()
+                    return Response(data=serializer.data, status=status.HTTP_200_OK)
+            return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class RecoverPasswordView(generics.GenericAPIView):
 
