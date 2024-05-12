@@ -127,7 +127,7 @@ class ContactUsView(generics.GenericAPIView):
         message_body = user_email + "  --> " + message
         
         # Send email
-        send_mail(subject, message_body, settings.EMAIL_HOST_USER, [settings.EMAIL_HOST_USER], fail_silently=True)
+        send_mail(subject, message_body, EMAIL_HOST_USER, [EMAIL_HOST_USER], fail_silently=True)
         
         return Response({"status": "MESSAGE_SENT"}, status=status.HTTP_200_OK)
 
