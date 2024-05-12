@@ -3,7 +3,7 @@ from .models import BourseEtude
 from . import serializers
 from rest_framework import generics,status
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAdminUser
 
 # Create your views here.
 
@@ -13,7 +13,7 @@ class BourseEtudeListView(generics.GenericAPIView):
 
     queryset = BourseEtude.objects.all()
 
-    #permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminUser]
 
     def get(self,request):
 
@@ -43,7 +43,7 @@ class BourseEtudeListView(generics.GenericAPIView):
 
 class BourseEtudeDetailView(generics.GenericAPIView):
 
-    #permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAdminUser]
 
     serializer_class = serializers.BourseEtudeCreationSerializer
 

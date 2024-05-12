@@ -68,6 +68,11 @@ class MetiersListView(generics.GenericAPIView):
     def post(self,request):
 
         data = request.data
+        user = request.user
+
+        # Check if the authenticated user is an admin
+        if not user.is_staff:
+            return Response({"error": "Only admin users can perform this action"}, status=status.HTTP_403_FORBIDDEN)
 
         serializer = self.serializer_class(data=data)
 
@@ -100,6 +105,12 @@ class MetiersDetailView(generics.GenericAPIView):
 
         data = request.data
 
+        user = request.user
+
+        # Check if the authenticated user is an admin
+        if not user.is_staff:
+            return Response({"error": "Only admin users can perform this action"}, status=status.HTTP_403_FORBIDDEN)
+
         metiers = get_object_or_404(Metiers,pk=metier_id)
 
         serializer = self.serializer_class(data=data,instance=metiers)
@@ -114,6 +125,12 @@ class MetiersDetailView(generics.GenericAPIView):
 
 
     def delete(self,request,metier_id):
+
+        user = request.user
+
+        # Check if the authenticated user is an admin
+        if not user.is_staff:
+            return Response({"error": "Only admin users can perform this action"}, status=status.HTTP_403_FORBIDDEN)
         
         metiers = get_object_or_404(Metiers,pk=metier_id)
 

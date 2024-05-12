@@ -57,21 +57,19 @@ class ActualitListView(generics.GenericAPIView):
         return Response(data=serializer.data,status=status.HTTP_200_OK)
 
 
-    def post(self,request):
-
+    def post(self, request):
         data = request.data
-
         serializer = self.serializer_class(data=data)
-
         user = request.user
 
+        # Check if the authenticated user is an admin
+        if not user.is_staff:
+            return Response({"error": "Only admin users can perform this action"}, status=status.HTTP_403_FORBIDDEN)
+
         if serializer.is_valid():
-
             serializer.save()
-
-            return Response(data=serializer.data,status=status.HTTP_201_CREATED)
-
-        return Response(data=serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+            return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+        return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ActualitDetailView(generics.GenericAPIView):
@@ -88,28 +86,29 @@ class ActualitDetailView(generics.GenericAPIView):
 
         return Response(data=serializer.data,status=status.HTTP_200_OK)
 
-    def put(self,request,Actualit_id):
 
+    def put(self, request, actualit_id):
+        # Check if the authenticated user is an admin
+        if not request.user.is_staff:
+            return Response({"error": "Only admin users can perform this action"}, status=status.HTTP_403_FORBIDDEN)
+        
         data = request.data
-
-        actualite = get_object_or_404(Actualit,pk=Actualit_id)
-
-        serializer = self.serializer_class(data=data,instance=actualite)
-
+        actualite = get_object_or_404(Actualit, pk=actualit_id)
+        serializer = self.serializer_class(data=data, instance=actualite)
+        
         if serializer.is_valid():
-
             serializer.save()
-
-            return Response(data=serializer.data,status=status.HTTP_200_OK)
-
-        return Response(data=serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+            return Response(data=serializer.data, status=status.HTTP_200_OK)
+        return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-    def delete(self,request,Actualit_id):
-
-        actualite = get_object_or_404(Actualit,pk=Actualit_id)
-
+    def delete(self, request, actualit_id):
+        # Check if the authenticated user is an admin
+        if not request.user.is_staff:
+            return Response({"error": "Only admin users can perform this action"}, status=status.HTTP_403_FORBIDDEN)
+        
+        actualite = get_object_or_404(Actualit, pk=actualit_id)
         actualite.delete()
-
+        
         return Response(status=status.HTTP_204_NO_CONTENT)
 

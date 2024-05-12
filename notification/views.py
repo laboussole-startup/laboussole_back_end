@@ -64,6 +64,12 @@ class NotificationListView(generics.GenericAPIView):
 
         data = request.data
 
+        user = request.user
+
+        # Check if the authenticated user is an admin
+        if not user.is_staff:
+            return Response({"error": "Only admin users can perform this action"}, status=status.HTTP_403_FORBIDDEN)
+
         serializer = self.serializer_class(data=data)
 
         user = request.user
@@ -95,6 +101,12 @@ class NotificationDetailView(generics.GenericAPIView):
 
         data = request.data
 
+        user = request.user
+
+        # Check if the authenticated user is an admin
+        if not user.is_staff:
+            return Response({"error": "Only admin users can perform this action"}, status=status.HTTP_403_FORBIDDEN)
+
         notification = get_object_or_404(Notification,pk=Notification_id)
 
         serializer = self.serializer_class(data=data,instance=notification)
@@ -109,6 +121,12 @@ class NotificationDetailView(generics.GenericAPIView):
 
 
     def delete(self,request,Notification_id):
+
+        user = request.user
+
+        # Check if the authenticated user is an admin
+        if not user.is_staff:
+            return Response({"error": "Only admin users can perform this action"}, status=status.HTTP_403_FORBIDDEN)
 
         notification = get_object_or_404(Notification,pk=Notification_id)
 

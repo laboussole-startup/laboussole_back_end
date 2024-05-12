@@ -33,6 +33,12 @@ class FilieresListView(generics.GenericAPIView):
 
         data = request.data
 
+        user = request.user
+
+        # Check if the authenticated user is an admin
+        if not user.is_staff:
+            return Response({"error": "Only admin users can perform this action"}, status=status.HTTP_403_FORBIDDEN)
+
         serializer = self.serializer_class(data=data)
 
         user = request.user
@@ -64,6 +70,12 @@ class FilieresDetailView(generics.GenericAPIView):
 
         data = request.data
 
+        user = request.user
+
+        # Check if the authenticated user is an admin
+        if not user.is_staff:
+            return Response({"error": "Only admin users can perform this action"}, status=status.HTTP_403_FORBIDDEN)
+
         filieres = get_object_or_404(Filieres,pk=filiere_id)
 
         serializer = self.serializer_class(data=data,instance=filieres)
@@ -78,6 +90,12 @@ class FilieresDetailView(generics.GenericAPIView):
 
 
     def delete(self,request,filiere_id):
+
+        user = request.user
+
+        # Check if the authenticated user is an admin
+        if not user.is_staff:
+            return Response({"error": "Only admin users can perform this action"}, status=status.HTTP_403_FORBIDDEN)
 
         filieres = get_object_or_404(Filieres,pk=filiere_id)
 

@@ -27,6 +27,12 @@ class RecherchesListView(generics.GenericAPIView):
 
         data = request.data
 
+        user = request.user
+
+        # Check if the authenticated user is an admin
+        if not user.is_staff:
+            return Response({"error": "Only admin users can perform this action"}, status=status.HTTP_403_FORBIDDEN)
+
         serializer = self.serializer_class(data=data)
 
         user = request.user
@@ -58,6 +64,12 @@ class RecherchesDetailView(generics.GenericAPIView):
 
         data = request.data
 
+        user = request.user
+
+        # Check if the authenticated user is an admin
+        if not user.is_staff:
+            return Response({"error": "Only admin users can perform this action"}, status=status.HTTP_403_FORBIDDEN)
+
         recherche = get_object_or_404(Recherches,pk=recherche_id)
 
         serializer = self.serializer_class(data=data,instance=recherche)
@@ -72,6 +84,12 @@ class RecherchesDetailView(generics.GenericAPIView):
 
 
     def delete(self,request,recherche_id):
+
+        user = request.user
+
+        # Check if the authenticated user is an admin
+        if not user.is_staff:
+            return Response({"error": "Only admin users can perform this action"}, status=status.HTTP_403_FORBIDDEN)
         
         recherche = get_object_or_404(Recherches,pk=recherche_id)
 

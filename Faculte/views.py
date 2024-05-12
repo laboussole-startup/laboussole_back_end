@@ -82,6 +82,12 @@ class FaculteListView(generics.GenericAPIView):
 
         data = request.data
 
+        user = request.user
+
+        # Check if the authenticated user is an admin
+        if not user.is_staff:
+            return Response({"error": "Only admin users can perform this action"}, status=status.HTTP_403_FORBIDDEN)
+
         serializer = self.serializer_class(data=data)
 
         user = request.user
@@ -113,6 +119,12 @@ class FaculteDetailView(generics.GenericAPIView):
 
         data = request.data
 
+        user = request.user
+
+        # Check if the authenticated user is an admin
+        if not user.is_staff:
+            return Response({"error": "Only admin users can perform this action"}, status=status.HTTP_403_FORBIDDEN)
+
         faculte = get_object_or_404(Faculte,pk=faculte_id)
 
         serializer = self.serializer_class(data=data,instance=faculte)
@@ -127,6 +139,12 @@ class FaculteDetailView(generics.GenericAPIView):
 
 
     def delete(self,request,faculte_id):
+
+        user = request.user
+
+        # Check if the authenticated user is an admin
+        if not user.is_staff:
+            return Response({"error": "Only admin users can perform this action"}, status=status.HTTP_403_FORBIDDEN)
 
         faculte = get_object_or_404(Faculte,pk=faculte_id)
 
