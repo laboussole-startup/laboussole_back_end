@@ -10,6 +10,8 @@ class Temoignage(models.Model):
     contenu = models.TextField(blank=True, null=True)
     photo = models.ImageField(upload_to="images/temoignages/", null=True)
     profession = models.CharField(max_length=255, blank=True, null=True)
+    tem_name = models.CharField(max_length=255, blank=True, null=True)
+    tem_photo = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         managed = False
