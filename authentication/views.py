@@ -38,7 +38,7 @@ class UserCreateView(APIView):
 
 
 class UserGetDetailView(generics.GenericAPIView):
-    permission_classes = [IsAuthenticated, IsAdminUser]
+    permission_classes = [IsAuthenticated]
     serializer_class = serializers.UserDetailSerializer  # Update to appropriate serializer
 
     def get(self, request, user_email):
