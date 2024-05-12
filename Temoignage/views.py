@@ -29,6 +29,9 @@ class TemoignageListView(generics.GenericAPIView):
 
         data = request.data
 
+        # Replace the 'nom' field with the authenticated user's email
+        data['nom'] = request.user.email
+
         serializer = self.serializer_class(data=data)
 
         user = request.user
@@ -56,27 +59,24 @@ class TemoignageDetailView(generics.GenericAPIView):
 
         return Response(data=serializer.data,status=status.HTTP_200_OK)
 
-    def put(self,request,temoignage_id):
-
-        data = request.data
-
-        temoignages = get_object_or_404(Temoignage,pk=temoignage_id)
-
-        serializer = self.serializer_class(data=data,instance=temoignages)
-
-        if serializer.is_valid():
-
-            serializer.save()
-
-            return Response(data=serializer.data,status=status.HTTP_200_OK)
-
-        return Response(data=serializer.errors,status=status.HTTP_400_BAD_REQUEST)
-
-
-    def delete(self,request,temoignage_id):
+    def put(self, request, temoignage_id):
+        if not request.user.is_staff:
+            return Response({"error": "Unauthorized access"}, status=status.HTTP_401_UNAUTHORIZED)
         
-        temoignages = get_object_or_404(Temoignage,pk=temoignage_id)
+        data = request.data
+        temoignage = get_object_or_404(Temoignage, pk=temoignage_id)
+        serializer = self.serializer_class(data=data, instance=temoignage)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response(data=serializer.data, status=status.HTTP_200_OK)
+        return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        temoignages.delete()
-
+    def delete(self, request, temoignage_id):
+        if not request.user.is_staff:
+            return Response({"error": "Unauthorized access"}, status=status.HTTP_401_UNAUTHORIZED)
+        
+        temoignage = get_object_or_404(Temoignage, pk=temoignage_id)
+        temoignage.delete()
+        
         return Response(status=status.HTTP_204_NO_CONTENT)
