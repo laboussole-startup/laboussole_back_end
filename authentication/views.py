@@ -7,7 +7,7 @@ from rest_framework import generics,status
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser,FormParser
 from django.contrib.auth.hashers import make_password,check_password
-from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly,IsAdminUser
 
 from django.core.mail import send_mail,EmailMessage
 
@@ -50,12 +50,17 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         return obj.email == request.user.email
 
 class UserGetDetailView(generics.GenericAPIView):
-    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly, IsAdminUser]
     serializer_class = serializers.UserDetailSerializer  # Update to appropriate serializer
 
     def get(self, request, user_email):
+        # Ensure that the user is either an admin or the authenticated user
+        if not request.user.is_staff and user_email != request.user.email:
+            return Response({"error": "Unauthorized access"}, status=status.HTTP_401_UNAUTHORIZED)
+        
         user = get_object_or_404(Utilisateur, email=user_email)
         serializer = self.serializer_class(instance=user, context={'request': request})
+        
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request, user_email):
@@ -111,25 +116,26 @@ class RecoverPasswordView(generics.GenericAPIView):
             return Response({"status": "CODE_MISMATCH"}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class ContactUsView(generics.GenericAPIView):
-
-    permission_classes = [IsAuthenticated]
-
-    serializer_class = serializers.ContactUsSerializer  # Update to appropriate serializer
-
-    def post(self, request,user_email):
-        user_email = request.data.get('user_email')
+def post(self, request):
+        user_email = request.user.email  # Get the email of the authenticated user
         message = request.data.get('message')
-
+        
         # Fetch the user based on the provided email
         user = get_object_or_404(Utilisateur, email=user_email)
-
+        
+        # Ensure that the email provided in the request matches the email of the authenticated user
+        if user_email != request.data.get('user_email'):
+            return Response({"error": "Unauthorized access"}, status=status.HTTP_401_UNAUTHORIZED)
+        
         subject = "MESSAGE UTILISATEUR LABOUSSOLE"
-
+        
         # Concatenate the message with the random number
-        message = user_email + "  --> " + message
-        send_mail(subject,message,EMAIL_HOST_USER,[EMAIL_HOST_USER],fail_silently=True)
-        return Response({"status":"MESSAGE_SENT"}, status=status.HTTP_200_OK)
+        message_body = user_email + "  --> " + message
+        
+        # Send email
+        send_mail(subject, message_body, EMAIL_HOST_USER, [EMAIL_HOST_USER], fail_silently=True)
+        
+        return Response({"status": "MESSAGE_SENT"}, status=status.HTTP_200_OK)
 
 
         
