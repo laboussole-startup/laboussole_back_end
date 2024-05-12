@@ -86,7 +86,7 @@ class RecoverPasswordView(generics.GenericAPIView):
         user = get_object_or_404(Utilisateur, email=user_email)
         serializer = self.serializer_class(instance=user, context={'request': request})
         subject = "RECUPERATION DE COMPTE"
-        random_number = str(random.randint(10000, 99999))
+        random_number = str(random.randint(1000000, 9999999))
 
         user.account_verification = make_password(random_number)
         user.save()
@@ -115,6 +115,8 @@ class RecoverPasswordView(generics.GenericAPIView):
             return Response({"status": "PASSWORD_UPDATED"}, status=status.HTTP_200_OK)
         else:
             # Code doesn't match
+            user.account_verification = ""
+            user.save()
             return Response({"status": "CODE_MISMATCH"}, status=status.HTTP_400_BAD_REQUEST)
 
 
