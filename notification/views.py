@@ -47,7 +47,7 @@ class NotificationListView(generics.GenericAPIView):
             queryset = queryset.order_by('-word_count', 'titre')
         else:
             # If search parameter is None, order by ascending order of nom field
-            queryset = queryset.order_by('titre')
+            queryset = queryset.order_by('date')
         return queryset
 
     def get(self,request):
