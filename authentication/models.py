@@ -66,6 +66,8 @@ class Utilisateur(AbstractUser):
     date_joined = models.DateTimeField(auto_now_add=True, null=True)
     date_inscription = models.DateTimeField(auto_now_add=True, null=True)
     account_verification=models.TextField(blank=True,null=True)
+    is_expert = models.BooleanField(blank=True, null=True)
+    expert_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = True

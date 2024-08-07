@@ -75,7 +75,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField( )
     last_name = serializers.CharField( )
     niveau = serializers.CharField(  )
-    genre = serializers.CharField( )
+    genre = serializers.CharField()
     date_de_naissance = serializers.DateField(  )
     email = serializers.CharField()
     password = serializers.CharField( )
@@ -84,12 +84,14 @@ class UserDetailSerializer(serializers.ModelSerializer):
     serie = serializers.CharField()
     photo_de_profil = serializers.ImageField()
     centres_interet = serializers.CharField()
+    is_expert =serializers.BooleanField()
+    expert_id=serializers.IntegerField()
 
 
 
     class Meta:
         model = Utilisateur
-        fields = ['id','username','first_name','last_name','niveau','genre','date_de_naissance','email','password','telephone','dernier_diplome', 'serie','photo_de_profil','centres_interet']
+        fields = ['id','username','first_name','last_name','niveau','genre','date_de_naissance','email','password','telephone','dernier_diplome', 'serie','photo_de_profil','centres_interet','is_expert','expert_id']
 
 
     def update(self, instance, validated_data):
