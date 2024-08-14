@@ -53,7 +53,7 @@ class ExpertDetailView(generics.GenericAPIView):
             return Response({"error": "Only admin users can perform this action"}, status=status.HTTP_403_FORBIDDEN)
 
         expert = get_object_or_404(Experts, pk=expert_id)
-        serializer = self.serializer_class(data=data, instance=expert)
+        serializer = self.serializer_class(data=data, instance=expert,partial=True)
 
         if serializer.is_valid():
             serializer.save()
