@@ -8,11 +8,14 @@ from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnl
 
 class ExpertListView(generics.GenericAPIView):
     serializer_class = serializers.ExpertCreationSerializer
-    queryset = Experts.objects.all()
     permission_classes = [IsAuthenticatedOrReadOnly]
 
+    def get_queryset(self):
+        return Experts.objects.all()
+
     def get(self, request):
-        queryset = self.filter_queryset(self.queryset)
+        queryset = self.get_queryset()
+        queryset = self.filter_queryset(queryset)
         serializer = self.serializer_class(instance=queryset, many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
