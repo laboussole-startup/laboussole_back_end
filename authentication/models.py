@@ -45,7 +45,7 @@ def get_upload_path(filename):
 
 
 class Utilisateur(AbstractUser):
-
+    
     id = models.AutoField(primary_key=True)
     username = models.CharField(max_length=255, blank=True, null=True)
     first_name = models.CharField(max_length=255, blank=True, null=True)
