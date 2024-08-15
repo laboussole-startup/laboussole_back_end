@@ -6,8 +6,8 @@ from rest_framework import serializers
 class ConsultationCreationSerializer(serializers.ModelSerializer):
     
     objet = serializers.CharField()
-    expert = serializers.IntegerField()
-    utilisateur = serializers.IntegerField()
+    expert_id = serializers.IntegerField()
+    utilisateur_id = serializers.IntegerField()
     montant = serializers.IntegerField()
     date = serializers.DateTimeField()
 
@@ -15,7 +15,7 @@ class ConsultationCreationSerializer(serializers.ModelSerializer):
     class Meta:
 
         model = Consultation
-        fields = ['objet','expert','utilisateur','montant','date']
+        fields = ['objet','expert_id','utilisateur_id','montant','date']
 
 
    
