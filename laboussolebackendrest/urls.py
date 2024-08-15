@@ -36,6 +36,7 @@ urlpatterns = [
     path('temoignages/',include('Temoignage.urls')),
     path('universites/',include('Universite.urls')),
     path('expert/',include('experts.urls')),
+    path('consultation/',include('consultations.urls')),
     path('swagger<format>/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     path('docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),

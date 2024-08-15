@@ -79,7 +79,8 @@ INSTALLED_APPS = [
     'actualites.apps.ActualitesConfig',
     'notification.apps.NotificationConfig',
     'historiqueRecherches.apps.HistoriquerecherchesConfig',
-    'experts.apps.ExpertsConfig'
+    'experts.apps.ExpertsConfig',
+    'consultations.apps.ConsultationsConfig',
 ]
 
 AUTH_USER_MODEL = 'authentication.Utilisateur'
