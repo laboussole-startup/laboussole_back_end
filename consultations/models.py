@@ -6,8 +6,8 @@ from authentication.models import Utilisateur
 class Consultation(models.Model):
     consultation_id = models.AutoField(primary_key=True)
     objet = models.CharField(max_length=255)
-    expert = models.ForeignKey(Experts, on_delete=models.CASCADE)
-    utilisateur = models.ForeignKey(Utilisateur, on_delete=models.CASCADE)
+    expert = models.IntegerField()
+    utilisateur = models.IntegerField()
     montant = models.IntegerField()
     date = models.DateTimeField()
 
