@@ -40,8 +40,8 @@ class ConsultationDetailView(generics.GenericAPIView):
     serializer_class = serializers.ConsultationCreationSerializer
 
     def get(self, request, Consultation_id):
-        Consultation = get_object_or_404(Consultation, pk=Consultation_id)
-        serializer = self.serializer_class(instance=Consultation)
+        consultation = get_object_or_404(Consultation, pk=Consultation_id)
+        serializer = self.serializer_class(instance=consultation)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request, Consultation_id):
@@ -52,8 +52,8 @@ class ConsultationDetailView(generics.GenericAPIView):
         if not user.is_staff:
             return Response({"error": "Only admin users can perform this action"}, status=status.HTTP_403_FORBIDDEN)
 
-        Consultation = get_object_or_404(Consultation, pk=Consultation_id)
-        serializer = self.serializer_class(data=data, instance=Consultation,partial=True)
+        consultation = get_object_or_404(Consultation, pk=Consultation_id)
+        serializer = self.serializer_class(data=data, instance=consultation,partial=True)
 
         if serializer.is_valid():
             serializer.save()
@@ -68,6 +68,6 @@ class ConsultationDetailView(generics.GenericAPIView):
         if not user.is_staff:
             return Response({"error": "Only admin users can perform this action"}, status=status.HTTP_403_FORBIDDEN)
 
-        Consultation = get_object_or_404(Consultation, pk=Consultation_id)
-        Consultation.delete()
+        consultation = get_object_or_404(Consultation, pk=Consultation_id)
+        consultation.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
