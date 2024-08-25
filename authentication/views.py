@@ -1,5 +1,6 @@
 import random
 from django.shortcuts import render,get_object_or_404
+from django.http import JsonResponse
 
 import Temoignage
 from .models import Utilisateur
@@ -146,6 +147,16 @@ class ContactUsView(generics.GenericAPIView):
         send_mail(subject, message_body, EMAIL_HOST_USER, [EMAIL_HOST_USER], fail_silently=True)
         
         return Response({"status": "MESSAGE_SENT"}, status=status.HTTP_200_OK)
+
+class GetUsernameByIdView(APIView):
+    permission_classes = [IsAuthenticated]  # Ensure the user is authenticated
+
+    def get(self, request, user_id):
+        # Fetch the user by ID
+        user = get_object_or_404(Utilisateur, id=user_id)
+
+        # Return the username
+        return JsonResponse({'username': user.username}, status=status.HTTP_200_OK)
 
         
 
