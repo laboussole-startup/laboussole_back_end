@@ -13,6 +13,9 @@ class Actualit(models.Model):
     image_tablette = models.TextField(blank=True, null=True)
     image_telephone = models.TextField(blank=True, null=True)
 
+    # New field for sender_id
+    sender_id = models.IntegerField(null=True, blank=True)
+
     def __str__(self) -> str:
         return f"<Actualite {self.nom}"
 
