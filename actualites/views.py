@@ -19,18 +19,19 @@ class ActualitListView(generics.GenericAPIView):
 
     def get_queryset(self):
         queryset = Actualit.objects.all()
+
+        # Get the sender_id from request query parameters
+        sender_id = self.request.query_params.get('sender_id', None)
+        if sender_id:
+            queryset = queryset.filter(sender_id=sender_id)
+        
         search_query = self.request.query_params.get('search', None)
         if search_query:
-            # Split the search query into individual words
             search_words = search_query.split()
-            # Create a Q object to combine multiple OR conditions
             conditions = Q()
             for word in search_words:
-                # Add OR condition for each word in the search query
                 conditions |= Q(titre__unaccent__icontains=word)
-            # Apply the filter
             queryset = queryset.filter(conditions)
-            # Annotate queryset with count of words from search query found in nom field
             queryset = queryset.annotate(
                 word_count=Sum(
                     Case(
@@ -40,13 +41,11 @@ class ActualitListView(generics.GenericAPIView):
                     )
                 )
             )
-            # Sort the queryset by the number of words found in descending order
             queryset = queryset.order_by('-word_count', 'titre')
         else:
-            # If search parameter is None, order by ascending order of nom field
             queryset = queryset.order_by('titre')
+        
         return queryset
-
     def get(self,request):
 
         queryset = self.get_queryset()
