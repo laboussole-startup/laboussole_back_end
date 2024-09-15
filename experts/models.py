@@ -18,6 +18,8 @@ class Experts(models.Model):
     note_moyenne = models.FloatField(blank=True, null=True)
     montant_commission = models.FloatField(blank=True, null=True)
 
+    description = models.TextField(blank=True, null=True)
+
     class Meta:
         managed = False
         db_table = 'experts'

@@ -18,11 +18,13 @@ class ExpertCreationSerializer(serializers.ModelSerializer):
     note_moyenne = serializers.FloatField()
     montant_commission = serializers.FloatField()
 
+    description = serializers.CharField()
+
 
     class Meta:
 
         model = Experts
-        fields = ['expert_id','nom','prenom','role','domaine','adresse_mail','telephone','pays','ville','annee_experience','nombre_personne_a_noter','note_moyenne','montant_commission']
+        fields = ['expert_id','nom','prenom','role','domaine','adresse_mail','telephone','pays','ville','annee_experience','nombre_personne_a_noter','note_moyenne','montant_commission','description']
 
 
    
