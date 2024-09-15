@@ -19,6 +19,7 @@ class Experts(models.Model):
     montant_commission = models.FloatField(blank=True, null=True)
 
     description = models.TextField(blank=True, null=True)
+    metier = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         managed = False
