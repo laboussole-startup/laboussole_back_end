@@ -6,7 +6,7 @@ from .models import Notification
 from . import serializers
 from rest_framework import generics,status
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAdminUser,IsAuthenticatedOrReadOnly
 from django.db.models import Q, Sum, Case, When, Value, IntegerField
 from django.db.models.functions import Length
 
@@ -19,6 +19,13 @@ class NotificationListView(generics.GenericAPIView):
     queryset = Notification.objects.all()
 
     permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_permissions(self):
+        if self.request.method == 'POST':
+            # Only allow POST for admin users
+            return [IsAdminUser()]
+        # For all other methods (GET, HEAD, OPTIONS), use default permissions
+        return super().get_permissions()
 
     def get_queryset(self):
         queryset = Notification.objects.all()
@@ -86,6 +93,13 @@ class NotificationListView(generics.GenericAPIView):
 class NotificationDetailView(generics.GenericAPIView):
 
     permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_permissions(self):
+        # Apply IsAdminUser permission for POST and PUT methods
+        if self.request.method in ['POST', 'PUT','DELETE']:
+            return [IsAdminUser()]
+        # For other methods like GET, allow the default permission (IsAuthenticatedOrReadOnly)
+        return super().get_permissions()
 
     serializer_class = serializers.NotificationCreationSerializer
 

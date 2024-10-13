@@ -81,6 +81,7 @@ INSTALLED_APPS = [
     'historiqueRecherches.apps.HistoriquerecherchesConfig',
     'experts.apps.ExpertsConfig',
     'consultations.apps.ConsultationsConfig',
+    'file_upload.apps.FileUploadConfig'
 ]
 
 AUTH_USER_MODEL = 'authentication.Utilisateur'
