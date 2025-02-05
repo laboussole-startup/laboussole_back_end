@@ -185,9 +185,11 @@ STATIC_FILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MEDIA_ROOT = '/var/data'
-
+# URL utilisée pour accéder aux fichiers média
 MEDIA_URL = '/media/'
+
+# Chemin sur le système de fichiers où seront stockés les fichiers média
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
