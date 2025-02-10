@@ -15,8 +15,8 @@ class Notification(models.Model):
     # Hello = models.TextField()
     
     
-    def is_expired(self):
-        return self.expiration_date < timezone.now()
+    # def is_expired(self):
+    #     return self.expiration_date < timezone.now()
 
     class Meta:
         managed = False
