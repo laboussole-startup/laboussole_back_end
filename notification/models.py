@@ -11,6 +11,10 @@ class Notification(models.Model):
     image_pc = models.TextField(blank=True, null=True)
     image_tablette = models.TextField(blank=True, null=True)
     image_telephone = models.TextField(blank=True, null=True)
+    expiration_date = models.DateTimeField(null=True, blank=True)
+    
+    def is_expired(self):
+        return self.expiration_date < timezone.now()
 
     class Meta:
         managed = False

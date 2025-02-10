@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAdminUser,IsAuthenticatedOrReadOnly
 from django.db.models import Q, Sum, Case, When, Value, IntegerField
 from django.db.models.functions import Length
+from django.utils import timezone
 
 # Create your views here.
 
@@ -28,7 +29,7 @@ class NotificationListView(generics.GenericAPIView):
         return super().get_permissions()
 
     def get_queryset(self):
-        queryset = Notification.objects.all()
+        queryset = Notification.objects.filter(expiration_date__gte=timezone.now())
         search_query = self.request.query_params.get('search', None)
         if search_query:
             # Split the search query into individual words
