@@ -29,7 +29,7 @@ class NotificationListView(generics.GenericAPIView):
         return super().get_permissions()
 
     def get_queryset(self):
-        # queryset = Notification.objects.filter(expiration_date__gte=timezone.now())
+        queryset = Notification.objects.filter(expiration_date__gte=timezone.now())
         queryset = Notification.objects.all()
         search_query = self.request.query_params.get('search', None)
         if search_query:
