@@ -30,7 +30,6 @@ class NotificationListView(generics.GenericAPIView):
 
     def get_queryset(self):
         queryset = Notification.objects.filter(expiration_date__gte=timezone.now())
-        queryset = Notification.objects.all()
         search_query = self.request.query_params.get('search', None)
         if search_query:
             # Split the search query into individual words
