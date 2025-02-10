@@ -3,7 +3,7 @@ from django.utils import timezone
 from dateutil.relativedelta import relativedelta
 
 def two_months_from_now():
-    return timezone.now() + relativedelta(months=2)
+    return timezone.now() + relativedelta(weeks=2)
 # Create your models here.
 class Notification(models.Model):
     id_notification = models.AutoField(primary_key=True)
