@@ -10,8 +10,8 @@ DB_HOST = "localhost"      # ou l'adresse IP / nom d'hôte du serveur
 DB_PORT = "5432"           # par défaut 5432
 
 # Ancien et nouveau URL
-OLD_URL = 'https://laboussole-back-end.onrender.com'
-NEW_URL = 'https://api.laboussole-edu.com'
+OLD_URL = 'orientarion-laboussole.s3.eu-north-1.amazonaws.com'
+NEW_URL = 'orientation-laboussole.s3.eu-north-1.amazonaws.com'
 
 def main():
     try:
