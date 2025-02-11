@@ -208,4 +208,4 @@ EMAIL_HOST_USER = 'laboussolesangmelima@gmail.com'
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
-DEFAULT_FROM_EMAIL = 'laboussolesangmelima@gmail.com'
+DEFAULT_FROM_EMAIL = 'laboussolesangmelima@gmail.com'    
