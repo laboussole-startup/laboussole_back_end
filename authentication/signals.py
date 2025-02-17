@@ -21,7 +21,7 @@ def replicate_user_to_second_db(sender, instance, created, **kwargs):
     email = instance.email
     first_name = instance.first_name if instance.first_name else ""
     last_name = instance.last_name if instance.last_name else ""
-    image = instance.photo_de_profil if instance.photo_de_profil else None
+    image = instance.photo_de_profil.url if instance.photo_de_profil else None
     phone_number = instance.telephone if instance.telephone else None
     is_validated = False
     social_links = Json({})

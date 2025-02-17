@@ -94,7 +94,7 @@ class RecoverPasswordView(generics.GenericAPIView):
 
         # Concatenate the message with the random number
         message = "CODE DE RECUPERATION --> " + random_number
-        send_mail(subject,message,EMAIL_HOST_USER,[user_email],fail_silently=True)
+        send_mail(subject,message,EMAIL_HOST_USER,[user_email],fail_silently=False)
         return Response({"status":"CODE_SENT"}, status=status.HTTP_200_OK)
 
     def post(self, request,user_email):
